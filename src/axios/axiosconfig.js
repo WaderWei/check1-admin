@@ -2,8 +2,8 @@ import axios from 'axios'
 import store from '../store/index'
 import router from '../router/index'
 
-axios.defaults.baseURL = 'http://192.168.0.121:8080'
-axios.defaults.timeout = 3000
+axios.defaults.baseURL = '' // 'http://192.168.0.121:8080'
+axios.defaults.timeout = 5000
 /* axios.create({
   baseURL: 'http://192.168.0.121:8080', // api 的 base_url
   withCredentials: true, // 跨域请求时发送 cookies
