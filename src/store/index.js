@@ -5,8 +5,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    token: sessionStorage.getItem('token') || ''
   },
   mutations: {
+    setToken (state, token) {
+      state.token = token
+      sessionStorage.setItem('token', token)
+    }
   },
   actions: {
   },
