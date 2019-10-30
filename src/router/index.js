@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '../views/Index.vue'
 
 Vue.use(Router)
 export default new Router({
@@ -8,19 +7,32 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'index',
-      component: Index
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('../views/Login.vue')
     },
     {
-      path: '/initSelection',
-      name: 'initSelection',
-      component: () => import('../views/InitSelection.vue')
+      path: '/downTabBar',
+      name: 'downTabBar',
+      component: () => import('../views/DownTabBar.vue'),
+      /* 嵌套路由即子路径不用加 /  */
+      children: [
+        {
+          path: 'home',
+          name: 'home',
+          component: () => import('../views/Home.vue')
+        },
+        {
+          path: 'index',
+          name: 'index',
+          component: () => import('../views/Index.vue')
+        },
+        {
+          path: 'initSelection',
+          name: 'initSelection',
+          component: () => import('../views/InitSelection.vue')
+        }
+      ]
     }
   ]
 })

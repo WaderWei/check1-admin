@@ -108,7 +108,7 @@ export default {
         if (result.code === 1) {
           this.$store.commit('setToken', result.token)
           if (result.data.roleType === 0) {
-            this.$router.replace({ path: '/initSelection' })
+            this.$router.replace({ path: 'downTabBar/initSelection' })
           } else {
             this.$router.replace({ path: '/' })
           }
