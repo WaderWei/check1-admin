@@ -7,9 +7,19 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/index',
+      name: 'index',
+      component: () => import('../views/DownTabBar.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/selectUsers',
+      name: 'selectUsers',
+      component: () => import('../views/SelectUsers.vue')
     },
     {
       path: '/downTabBar',

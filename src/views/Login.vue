@@ -45,7 +45,7 @@
     </md-field>
   </div>
   <div class="login-button">
-    <md-button type="warning" round @click="login">登录</md-button>
+    <md-button type="warning" round @click="login" :loading="loading" :inactive="inactive">登录</md-button>
   </div>
 </div>
 </template>
@@ -68,7 +68,9 @@ export default {
       isUserIdError: true,
       isPasswordError: true,
       userIdError: '',
-      passwordError: ''
+      passwordError: '',
+      loading: false,
+      inactive: false
     }
   },
   methods: {
@@ -104,19 +106,20 @@ export default {
     },
     async login () {
       if (!this.isUserIdError && !this.isPasswordError) {
+        this.loading = true
+        this.inactive = true
         const result = await this.$http.get('user/login', { params: { userId: this.userId, password: this.password } })
         if (result.code === 1) {
           this.$store.commit('setToken', result.token)
-          if (result.data.roleType === 0) {
-            this.$router.replace({ path: 'downTabBar/initSelection' })
-          } else {
-            this.$router.replace({ path: '/' })
-          }
+          this.$store.commit('setUser', JSON.stringify(result.data))
+          this.$router.replace({ path: 'downTabBar' })
         } else {
           Dialog.alert({
-            content: result.message
+            content: result.msg
           })
         }
+        this.loading = false
+        this.inactive = false
       }
     }
   },

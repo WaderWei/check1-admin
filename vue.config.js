@@ -12,25 +12,79 @@ module.exports = {
     devServer: {
       before (app) {
         // 用户信息池
+        let userpoor = [
+          { userId: 'wade', password: '123456', roleType: 1 },
+          { userId: 'admin', password: '123456', roleType: 0 }
+        ]
+        let oaUser = [
+          { value: '1', label: 'wade1', brief: '软件部' },
+          { value: '2', label: 'wade2', brief: '销售部' },
+          { value: '3', label: 'wade3', brief: '总部' },
+          { value: '4', label: 'wade4', brief: '财务部' },
+          { value: '5', label: 'wade1', brief: '检查部' },
+          { value: '6', label: 'wade2', brief: '软件部' },
+          { value: '7', label: 'wade3', brief: '软件部' },
+          { value: '8', label: 'wade4', brief: '软件部' },
+          { value: '9', label: 'wade1', brief: '软件部' },
+          { value: '10', label: 'wade2', brief: '软件部' },
+          { value: '11', label: 'wade3', brief: '软件部' },
+          { value: '12', label: 'wade4', brief: '软件部' },
+          { value: '13', label: 'wade1', brief: '软件部' },
+          { value: '14', label: 'wade2', brief: '软件部' },
+          { value: '15', label: 'wade3', brief: '软件部' },
+          { value: '16', label: 'wade4', brief: '软件部' },
+          { value: '17', label: 'wade5', brief: '软件部' }
+        ]
         // 登录接口
         let tokenKey = 'wade'
-        app.get('/api/login', (req, res) => {
+        app.get('/user/login', (req, res) => {
           const { userId, password } = req.query
-          if ((userId === 'wade' && password === '123456') || (userId === 'jeck' && password === '123456') || (userId === 'admin' && password === '123')) {
+          const user = userpoor.filter(u => u.userId === userId && u.password === password)[0]
+          if (user) {
             res.json({
               code: 1,
-              message: '登录成功',
+              msg: '登录成功',
               data: {
-                roleType: 0
+                roleType: user.roleType
               },
               token: tokenKey + '-' + userId + '-' + (new Date().getTime() + 60 * 60 * 1000)// 这里日期是Date
             })
           } else {
             res.json({
               code: 0,
-              message: '账号或者密码错误'
+              msg: '账号或者密码错误'
             })
           }
+        })
+
+        app.get('/user/find', (req, res) => {
+          const { keyValue } = req.query
+          const user = oaUser.filter(o => o.value.indexOf(keyValue) !== -1)
+          res.json({
+            code: 1,
+            msg: '',
+            data: user
+          })
+        })
+
+        app.get('/user/findCreator', (req, res) => {
+          const { roleType } = req.query
+          console.log(roleType)
+          res.json({
+            code: 1,
+            msg: '',
+            data: oaUser
+          })
+        })
+
+        app.post('/user/adds', (req, res) => {
+          const { selectors } = req.query
+          console.log(selectors)
+          res.json({
+            code: 1,
+            msg: '',
+            data: 10
+          })
         })
       }
     }

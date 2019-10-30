@@ -30,6 +30,7 @@
 
 <script>
 import { TabBar, Icon } from 'mand-mobile'
+import { mapState } from 'vuex'
 export default {
   name: 'DownTabBar',
   components: {
@@ -43,11 +44,16 @@ export default {
       items: [{ name: 1, label: '首页', icon: 'home' }, { name: 2, label: '我的', icon: 'user' }]
     }
   },
+  computed: {
+    ...mapState({
+      user: state => JSON.parse(state.user)
+    })
+  },
   methods: {
     changeBar (item, index, prevIndex) {
       switch (index) {
         case 0: {
-          if (index === 0) {
+          if (this.user.roleType === 1) {
             this.$router.push({ path: '/downTabBar/index' })
           } else {
             this.$router.push({ path: '/downTabBar/InitSelection' })

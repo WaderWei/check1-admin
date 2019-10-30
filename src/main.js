@@ -19,7 +19,16 @@ router.beforeEach((to, from, next) => {
   }
   store.commit('setToken', sessionStorage.getItem('token'))
   if (store.state.token) {
-    next()
+    if (to.matched.length === 0) {
+      console.log(to)
+      console.log(from)
+      next({
+        path: '/downTabBar/home',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
   } else {
     next({
       path: '/login',
