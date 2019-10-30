@@ -12,7 +12,7 @@
       >
         <md-icon name="search" slot="left" size="lg" @click="usersSearch"></md-icon>
       </md-input-item>
-      <md-button class="s-btn" type="default"  size="small" round @click="addUser" :loading="loading" :inactive="inactive" icon="right">添加</md-button>
+      <md-button class="s-btn" type="default"  round @click="addUser" :loading="loading" :inactive="inactive" icon="right">添加</md-button>
     </div>
     <div class="s-list" v-if="findUser.length > 0">
       <md-scroll-view
@@ -70,7 +70,11 @@ export default {
           this.findUser = []
         }
       } else {
-        alert('请输入关键字')
+        Dialog.alert({
+          title: '提示',
+          content: '请输入关键字再查询',
+          confirmText: '确定'
+        })
       }
     },
     clearData () {
@@ -79,7 +83,7 @@ export default {
       this.selector = []
     },
     async addUser () {
-      if (this.selector) {
+      if (this.selector && this.selector.length > 0) {
         console.log(this.selector)
         const result = await this.$http.post('user/adds', { params: { selectors: this.selector } })
         if (result.data > 0) {

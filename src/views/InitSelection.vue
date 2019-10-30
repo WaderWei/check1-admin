@@ -9,7 +9,7 @@
         <md-button type="warning" round  icon="delete" size="small" style="margin: 0 10px;font-size: 16px">删除</md-button>
       </div>
     </div>
-    <div class="s-list">
+    <div class="s-list" v-if="creator.length > 0">
       <md-scroll-view
       >
       <md-field title="制定人列表">
@@ -22,11 +22,14 @@
       </md-field>
     </md-scroll-view>
     </div>
+    <div>
+      <md-result-page></md-result-page>
+    </div>
   </div>
 </template>
 
 <script>
-import { Field, CheckList, Button, ScrollView } from 'mand-mobile'
+import { Field, CheckList, Button, ScrollView, ResultPage } from 'mand-mobile'
 
 export default {
   name: 'InitSelection',
@@ -34,6 +37,7 @@ export default {
     [Field.name]: Field,
     [Button.name]: Button,
     [ScrollView.name]: ScrollView,
+    [ResultPage.name]: ResultPage,
     [CheckList.name]: CheckList
   },
   data () {
@@ -43,13 +47,15 @@ export default {
     }
   },
   created () {
-    const result = this.$http.get('user/findCreator', { params: { roleType: 1 } })
-    if (result.data.length > 0) {
-      this.creator = result.data
-    } else {
-      this.creator = []
-      this.selector = []
-    }
+    this.$http.get('user/findCreator', { params: { roleType: 1 } })
+      .then(res => {
+        if (res.data.length > 0) {
+          this.creator = res.data
+        } else {
+          this.creator = []
+          this.selector = []
+        }
+      })
   },
   mounted () {
     const contain = document.querySelector('.select-contain')

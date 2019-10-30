@@ -5,7 +5,7 @@ const pxtorem = require('postcss-pxtorem')
 const resolve = file => path.resolve(__dirname, file)
 module.exports = {
   devServer: {
-    host: '192.168.0.120',
+    host: '192.168.0.104',
     port: 8080 // 端口
   },
   configureWebpack: {
@@ -73,7 +73,7 @@ module.exports = {
           res.json({
             code: 1,
             msg: '',
-            data: oaUser
+            data: []
           })
         })
 
