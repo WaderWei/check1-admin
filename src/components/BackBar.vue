@@ -7,7 +7,7 @@
         {{title}}
       </div>
       <div class="b-clear" @click="$emit('receive')">
-        清空
+        <span v-if="!type">清空</span>
       </div>
     </div>
 </template>
@@ -16,7 +16,7 @@
 import { Icon, Button } from 'mand-mobile'
 export default {
   name: 'BackBar',
-  props: ['title'],
+  props: ['title', 'type'],
   components: {
     [Icon.name]: Icon,
     [Button.name]: Button

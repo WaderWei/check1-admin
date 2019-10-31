@@ -10,7 +10,7 @@
           v-model="current"
           :items="items"
           :has-ink="true"
-          :immediate="true"
+          :immediate="false"
           @change="changeBar"
         >
           <template slot="item" slot-scope="{ item }">
@@ -49,19 +49,34 @@ export default {
       user: state => JSON.parse(state.user)
     })
   },
+  created () {
+    if (this.$route.name !== 'home') {
+      this.current = 1
+      if (this.user[0].roleType === 0) {
+        this.$router.push({ path: '/downTabBar/InitSelection' })
+      } else {
+        this.$router.push({ path: '/downTabBar/index' })
+      }
+    } else {
+      this.current = 2
+      this.$router.push({ path: '/downTabBar/home' })
+    }
+  },
   methods: {
     changeBar (item, index, prevIndex) {
       switch (index) {
         case 0: {
-          if (this.user.roleType === 1) {
-            this.$router.push({ path: '/downTabBar/index' })
-          } else {
+          this.current = 1
+          if (this.user[0].roleType === 0) {
             this.$router.push({ path: '/downTabBar/InitSelection' })
+          } else {
+            this.$router.push({ path: '/downTabBar/index' })
           }
           break
         }
         case 1: {
           this.$router.push({ path: '/downTabBar/home' })
+          this.current = 2
           break
         }
       }

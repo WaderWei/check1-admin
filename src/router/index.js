@@ -22,6 +22,11 @@ export default new Router({
       component: () => import('../views/SelectUsers.vue')
     },
     {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      component: () => import('../views/ResetPassword.vue')
+    },
+    {
       path: '/downTabBar',
       name: 'downTabBar',
       component: () => import('../views/DownTabBar.vue'),
@@ -35,7 +40,14 @@ export default new Router({
         {
           path: 'index',
           name: 'index',
-          component: () => import('../views/Index.vue')
+          component: () => import('../views/Index.vue'),
+          children: [
+            {
+              path: 'checkList',
+              name: 'checkList',
+              component: () => import('../views/CheckList.vue')
+            }
+          ]
         },
         {
           path: 'initSelection',

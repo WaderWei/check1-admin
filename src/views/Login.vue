@@ -45,13 +45,21 @@
     </md-field>
   </div>
   <div class="login-button">
-    <md-button type="warning" round @click="login" :loading="loading" :inactive="inactive">登录</md-button>
+    <div class="l-switch">
+      <md-switch
+        v-model="isActive"
+      ></md-switch><span>记住密码</span>
+    </div>
+    <div class="l-login">
+      <md-button type="warning" round @click="login" :loading="loading" :inactive="inactive">登录</md-button>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-import { InputItem, Field, Icon, Dialog, Button } from 'mand-mobile'
+import { compileStr, uncompileStr } from '../utils'
+import { InputItem, Field, Icon, Dialog, Button, Switch } from 'mand-mobile'
 
 export default {
   name: 'Login',
@@ -59,10 +67,12 @@ export default {
     [InputItem.name]: InputItem,
     [Icon.name]: Icon,
     [Button.name]: Button,
+    [Switch.name]: Switch,
     [Field.name]: Field
   },
   data () {
     return {
+      isActive: false,
       userId: '',
       password: '',
       isUserIdError: true,
@@ -110,6 +120,12 @@ export default {
         this.inactive = true
         const result = await this.$http.get('user/login', { params: { userId: this.userId, password: this.password } })
         if (result.code === 1) {
+          if (this.isActive) {
+            const rememberUserInfo = { userId: this.userId, password: this.password }
+            localStorage.setItem('rememberInfo', compileStr(JSON.stringify(rememberUserInfo)))
+          } else {
+            localStorage.removeItem('rememberInfo')
+          }
           this.$store.commit('setToken', result.token)
           this.$store.commit('setUser', JSON.stringify(result.data))
           this.$router.replace({ path: 'downTabBar' })
@@ -122,8 +138,18 @@ export default {
         this.inactive = false
       }
     }
+
   },
   mounted () {
+    const info = localStorage.getItem('rememberInfo')
+    if (info) {
+      const user = JSON.parse(uncompileStr(info))
+      this.userId = user.userId
+      this.password = user.password
+      this.isActive = true
+      this.isUserIdError = false
+      this.isPasswordError = false
+    }
     this.$refs.input9.focus()
   }
 }
@@ -160,6 +186,18 @@ export default {
     font-weight: bold;
   }
   .login-title .version{
+    font-size: 30px;
+  }
+  .l-switch{
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  .l-switch > span{
+    margin-left: 10px;
     font-size: 30px;
   }
 </style>

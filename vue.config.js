@@ -5,7 +5,7 @@ const pxtorem = require('postcss-pxtorem')
 const resolve = file => path.resolve(__dirname, file)
 module.exports = {
   devServer: {
-    host: '192.168.0.104',
+    host: '192.168.0.120',
     port: 8080 // 端口
   },
   configureWebpack: {
@@ -13,8 +13,11 @@ module.exports = {
       before (app) {
         // 用户信息池
         let userpoor = [
-          { userId: 'wade', password: '123456', roleType: 1 },
-          { userId: 'admin', password: '123456', roleType: 0 }
+          { lastName: 'admin', userId: '17356526878', password: '123456', roleType: 0, roleName: '管理员' },
+          { lastName: 'wade', userId: '17356526879', password: '123456', roleType: 1, roleName: '制定人' },
+          { lastName: 'wade', userId: '17356526879', password: '123456', roleType: 2, roleName: '检查人' },
+          { lastName: 'wade', userId: '17356526879', password: '123456', roleType: 3, roleName: '执行人' },
+          { lastName: 'wade', userId: '17356526879', password: '123456', roleType: 3, roleName: '接收人' }
         ]
         let oaUser = [
           { value: '1', label: 'wade1', brief: '软件部' },
@@ -39,14 +42,13 @@ module.exports = {
         let tokenKey = 'wade'
         app.get('/user/login', (req, res) => {
           const { userId, password } = req.query
-          const user = userpoor.filter(u => u.userId === userId && u.password === password)[0]
-          if (user) {
+          const user = userpoor.filter(u => u.userId === userId && u.password === password)
+          console.log(user)
+          if (user.length > 0) {
             res.json({
               code: 1,
               msg: '登录成功',
-              data: {
-                roleType: user.roleType
-              },
+              data: user,
               token: tokenKey + '-' + userId + '-' + (new Date().getTime() + 60 * 60 * 1000)// 这里日期是Date
             })
           } else {
@@ -84,6 +86,17 @@ module.exports = {
             code: 1,
             msg: '',
             data: 10
+          })
+        })
+
+        app.post('/user/update', (req, res) => {
+          const { oldPwd, newPwd } = req.query
+          console.log(oldPwd)
+          console.log(newPwd)
+          res.json({
+            code: 1,
+            msg: '',
+            data: newPwd
           })
         })
       }
