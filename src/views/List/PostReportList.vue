@@ -1,12 +1,12 @@
 <template>
-    <div>
-      检查列表
-    </div>
+  <div>
+    提交的报告
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'CheckList'
+  name: 'PostReportList'
 }
 </script>
 

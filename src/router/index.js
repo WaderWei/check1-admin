@@ -43,9 +43,29 @@ export default new Router({
           component: () => import('../views/Index.vue'),
           children: [
             {
+              path: 'createList',
+              name: 'createList',
+              component: () => import('../views/List/CreateList.vue')
+            },
+            {
+              path: 'exeList',
+              name: 'exeList',
+              component: () => import('../views/List/ExeList.vue')
+            },
+            {
               path: 'checkList',
               name: 'checkList',
-              component: () => import('../views/CheckList.vue')
+              component: () => import('../views/List/CheckList.vue')
+            },
+            {
+              path: 'postReportList',
+              name: 'postReportList',
+              component: () => import('../views/List/PostReportList.vue')
+            },
+            {
+              path: 'receiveReportList',
+              name: 'receiveReportList',
+              component: () => import('../views/List/ReceiveReportList.vue')
             }
           ]
         },
@@ -55,6 +75,11 @@ export default new Router({
           component: () => import('../views/InitSelection.vue')
         }
       ]
+    },
+    {
+      path: '/FZF',
+      name: 'FZF',
+      component: () => import('../views/FZF.vue')
     }
   ]
 })

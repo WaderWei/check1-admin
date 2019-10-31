@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
       console.log(to)
       console.log(from)
       next({
-        path: '/downTabBar/home',
+        path: '/FZF',
         query: { redirect: to.fullPath }
       })
     } else {

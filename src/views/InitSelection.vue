@@ -22,7 +22,7 @@
       </md-field>
     </md-scroll-view>
     </div>
-    <div>
+    <div style="width: 100%;">
       <md-result-page></md-result-page>
     </div>
   </div>

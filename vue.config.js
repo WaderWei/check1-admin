@@ -5,7 +5,7 @@ const pxtorem = require('postcss-pxtorem')
 const resolve = file => path.resolve(__dirname, file)
 module.exports = {
   devServer: {
-    host: '192.168.0.120',
+    host: '192.168.0.104',
     port: 8080 // 端口
   },
   configureWebpack: {
@@ -37,6 +37,16 @@ module.exports = {
           { value: '15', label: 'wade3', brief: '软件部' },
           { value: '16', label: 'wade4', brief: '软件部' },
           { value: '17', label: 'wade5', brief: '软件部' }
+        ]
+
+        let checkList = [
+          { id: 1, name: '大厅检查表1', state: '未提交' },
+          { id: 2, name: '大厅检查表2', state: '已提交' },
+          { id: 3, name: '大厅检查表3', state: '报废' },
+          { id: 4, name: '大厅检查表4', state: '未提交' },
+          { id: 5, name: '大厅检查表5', state: '未提交' },
+          { id: 6, name: '大厅检查表6', state: '未提交' },
+          { id: 7, name: '大厅检查表7', state: '未提交' }
         ]
         // 登录接口
         let tokenKey = 'wade'
@@ -97,6 +107,14 @@ module.exports = {
             code: 1,
             msg: '',
             data: newPwd
+          })
+        })
+
+        app.get('/check/findAll', (req, res) => {
+          res.json({
+            code: 1,
+            msg: '',
+            data: checkList
           })
         })
       }

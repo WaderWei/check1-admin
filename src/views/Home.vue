@@ -35,7 +35,7 @@
 import { ImageViewer, FieldItem, Icon, Button, Dialog } from 'mand-mobile'
 import { mapState } from 'vuex'
 export default {
-  name: 'Home1',
+  name: 'Home',
   components: {
     [ImageViewer.name]: ImageViewer,
     [FieldItem.name]: FieldItem,
@@ -56,7 +56,6 @@ export default {
     this.roleName = this.user.map(function (u) {
       return u.roleName
     })
-    console.log(this.lastName)
   },
   computed: {
     ...mapState({
