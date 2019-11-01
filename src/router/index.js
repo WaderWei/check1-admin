@@ -27,6 +27,11 @@ export default new Router({
       component: () => import('../views/ResetPassword.vue')
     },
     {
+      path: '/createCheckTb',
+      name: 'createCheckTb',
+      component: () => import('../views/CreateCheckTb.vue')
+    },
+    {
       path: '/downTabBar',
       name: 'downTabBar',
       component: () => import('../views/DownTabBar.vue'),

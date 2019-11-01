@@ -3,7 +3,7 @@
     <div class="i-title">
       <md-button type="link" size="large" icon="arrow-right" @click="showPopUp('left')">展开</md-button>
     </div>
-    <div>
+    <div class="i-router">
       <router-view/>
     </div>
     <md-popup

@@ -5,7 +5,7 @@ const pxtorem = require('postcss-pxtorem')
 const resolve = file => path.resolve(__dirname, file)
 module.exports = {
   devServer: {
-    host: '192.168.0.104',
+    host: '192.168.0.120',
     port: 8080 // 端口
   },
   configureWebpack: {
@@ -40,13 +40,23 @@ module.exports = {
         ]
 
         let checkList = [
-          { id: 1, name: '大厅检查表1', state: '未提交' },
-          { id: 2, name: '大厅检查表2', state: '已提交' },
-          { id: 3, name: '大厅检查表3', state: '报废' },
-          { id: 4, name: '大厅检查表4', state: '未提交' },
-          { id: 5, name: '大厅检查表5', state: '未提交' },
-          { id: 6, name: '大厅检查表6', state: '未提交' },
-          { id: 7, name: '大厅检查表7', state: '未提交' }
+          { value: 1, label: '大厅检查表1', brief: '未提交' },
+          { value: 2, label: '大厅检查表2', brief: '已提交' },
+          { value: 3, label: '大厅检查表3', brief: '作废' },
+          { value: 4, label: '大厅检查表4', brief: '未提交' },
+          { value: 5, label: '大厅检查表5', brief: '未提交' },
+          { value: 6, label: '大厅检查表6', brief: '未提交' },
+          { value: 7, label: '大厅检查表7', brief: '未提交' },
+          { value: 8, label: '大厅检查表3', brief: '作废' },
+          { value: 9, label: '大厅检查表4', brief: '未提交' },
+          { value: 10, label: '大厅检查表5', brief: '未提交' },
+          { value: 11, label: '大厅检查表6', brief: '未提交' },
+          { value: 12, label: '大厅检查表6', brief: '未提交' },
+          { value: 13, label: '大厅检查表7', brief: '未提交' },
+          { value: 14, label: '大厅检查表3', brief: '作废' },
+          { value: 15, label: '大厅检查表4', brief: '未提交' },
+          { value: 16, label: '大厅检查表5', brief: '未提交' },
+          { value: 17, label: '大厅检查表6', brief: '未提交' }
         ]
         // 登录接口
         let tokenKey = 'wade'
@@ -85,7 +95,7 @@ module.exports = {
           res.json({
             code: 1,
             msg: '',
-            data: []
+            data: oaUser
           })
         })
 

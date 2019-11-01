@@ -10,8 +10,7 @@
       </div>
     </div>
     <div class="s-list" v-if="creator.length > 0">
-      <md-scroll-view
-      >
+      <md-scroll-view>
       <md-field title="制定人列表">
         <md-check-list
           v-model="selector"
@@ -22,7 +21,7 @@
       </md-field>
     </md-scroll-view>
     </div>
-    <div style="width: 100%;">
+    <div v-else style="width: 100%;">
       <md-result-page></md-result-page>
     </div>
   </div>
