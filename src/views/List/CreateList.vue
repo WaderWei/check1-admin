@@ -24,7 +24,6 @@
           v-model="isShoeSheet"
           :title="spliceTitle"
           :default-index="defaultIndex"
-          :invalid-index="invalidIndex"
           cancel-text="取消"
           :options="options"
           @selected="$_selected"
@@ -63,7 +62,6 @@ export default {
       opeTitle: '',
       isShoeSheet: false,
       defaultIndex: 0,
-      invalidIndex: 0,
       options: []
     }
   },
