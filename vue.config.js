@@ -5,7 +5,7 @@ const pxtorem = require('postcss-pxtorem')
 const resolve = file => path.resolve(__dirname, file)
 module.exports = {
   devServer: {
-    host: '192.168.0.120',
+    host: '192.168.0.104',
     port: 8080 // 端口
   },
   configureWebpack: {
@@ -57,6 +57,26 @@ module.exports = {
           { value: 15, label: '大厅检查表4', brief: '未提交' },
           { value: 16, label: '大厅检查表5', brief: '未提交' },
           { value: 17, label: '大厅检查表6', brief: '未提交' }
+        ]
+
+        let checkItemList = [
+          { value: 1, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬1' },
+          { value: 2, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬2' },
+          { value: 3, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬3' },
+          { value: 4, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬4' },
+          { value: 5, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬5' },
+          { value: 6, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬6' },
+          { value: 7, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬7' },
+          { value: 8, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬3' },
+          { value: 9, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬4' },
+          { value: 10, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬1' },
+          { value: 11, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬2' },
+          { value: 12, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬3' },
+          { value: 13, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬4' },
+          { value: 14, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬5' },
+          { value: 15, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬6' },
+          { value: 16, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬7' },
+          { value: 17, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬3' }
         ]
         // 登录接口
         let tokenKey = 'wade'
@@ -125,6 +145,14 @@ module.exports = {
             code: 1,
             msg: '',
             data: checkList
+          })
+        })
+
+        app.get('/check/findItemAll', (req, res) => {
+          res.json({
+            code: 1,
+            msg: '',
+            data: checkItemList
           })
         })
       }

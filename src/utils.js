@@ -15,3 +15,12 @@ export function uncompileStr (code) {
   }
   return c
 }
+
+export function findObjArrWithIdArr (allArr, idArr) {
+  let selectItems = []
+  for (let i = 0; i < idArr.length; i++) {
+    const selectItem = allArr.find(c => c.value === idArr[i])
+    selectItems.push(selectItem)
+  }
+  return selectItems
+}

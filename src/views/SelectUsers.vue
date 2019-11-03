@@ -36,7 +36,8 @@
 <script>
 import BackBar from '../components/BackBar'
 import { InputItem, Icon, ScrollView, CheckList, Field, ResultPage, Button, Dialog } from 'mand-mobile'
-
+import { findObjArrWithIdArr } from '../utils'
+const selectUser = 'selectUser'
 export default {
   name: 'SelectUsers',
   components: {
@@ -54,11 +55,16 @@ export default {
     return {
       title: '选人',
       keyValue: '',
+      routeType: '',
       selector: [],
       findUser: [],
       loading: false,
       inactive: false
     }
+  },
+  created () {
+    this.routeType = this.$route.params.type
+    console.log(this.routeType)
   },
   methods: {
     async usersSearch () {
@@ -84,21 +90,44 @@ export default {
     },
     async addUser () {
       if (this.selector && this.selector.length > 0) {
-        console.log(this.selector)
-        const result = await this.$http.post('user/adds', { params: { selectors: this.selector } })
-        if (result.data > 0) {
+        // admin
+        if (this.routeType === 1) {
+          const result = await this.$http.post('user/adds', { params: { selectors: this.selector } })
+          if (result.data > 0) {
+            Dialog.succeed({
+              title: '成功',
+              content: '创建人添加成功',
+              confirmText: '确定'
+            })
+            this.selector = []
+            this.findUser = []
+            this.keyValue = ''
+          } else {
+            Dialog.failed({
+              title: '失败',
+              content: '添加失败，请稍后重试',
+              confirmText: '确定'
+            })
+          }
+        } else {
+          let selectUserArr = findObjArrWithIdArr(this.findUser, this.selector)
+          let storageUserArr = []
+          let storageUserStr = sessionStorage.getItem(selectUser + this.routeType)
+          if (storageUserStr) {
+            storageUserArr = JSON.parse(storageUserStr)
+            for (let i = 0; i < selectUserArr.length; i++) {
+              // 如果存储中的数组中不存在，则加入到存储中的数组中
+              if (!(storageUserArr.find(s => s.value === selectUserArr[i].value))) {
+                storageUserArr.push(selectUserArr[i])
+              }
+            }
+          } else {
+            storageUserArr = selectUserArr
+          }
+          sessionStorage.setItem(selectUser + this.routeType, JSON.stringify(storageUserArr))
           Dialog.succeed({
             title: '成功',
-            content: '创建人添加成功',
-            confirmText: '确定'
-          })
-          this.selector = []
-          this.findUser = []
-          this.keyValue = ''
-        } else {
-          Dialog.failed({
-            title: '失败',
-            content: '添加失败，请稍后重试',
+            content: '选择成功，返回查看',
             confirmText: '确定'
           })
         }

@@ -29,7 +29,17 @@ export default new Router({
     {
       path: '/createCheckTb',
       name: 'createCheckTb',
-      component: () => import('../views/CreateCheckTb.vue')
+      component: () => import('../views/newadd/CreateCheckTb.vue')
+    },
+    {
+      path: '/createCheckItem',
+      name: 'createCheckItem',
+      component: () => import('../views/newadd/CreateCheckItem.vue')
+    },
+    {
+      path: '/checkItemList',
+      name: 'checkItemList',
+      component: () => import('../views/List/CheckItemList.vue')
     },
     {
       path: '/downTabBar',

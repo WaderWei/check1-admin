@@ -35,6 +35,8 @@
 
 <script>
 import { Button, Icon, Field, ActionSheet, ScrollView, CheckList, ResultPage, Dialog } from 'mand-mobile'
+import { findObjArrWithIdArr } from '../../utils'
+const selectUser = 'selectUser'
 // 1.未提交(编辑不新增) 2.已提交(编辑新增) 3.作废
 const optionsAll = [
   { label: '查看', value: 0, tableState: ['未提交', '已提交', '作废'] },
@@ -64,6 +66,11 @@ export default {
       defaultIndex: 0,
       options: []
     }
+  },
+  created () {
+    sessionStorage.removeItem(selectUser + 2)
+    sessionStorage.removeItem(selectUser + 3)
+    sessionStorage.removeItem(selectUser + 4)
   },
   mounted () {
     this.getList()
@@ -110,11 +117,7 @@ export default {
         /* { label: '提交', value: 2, tableState: ['未提交'] },
         { label: '作废', value: 3, tableState: ['已提交'] },
         { label: '删除', value: 4, tableState: ['未提交'] } */
-        let selectItems = []
-        for (let i = 0; i < this.selector.length; i++) {
-          const selectItem = this.createList.find(c => c.value === this.selector[i])
-          selectItems.push(selectItem)
-        }
+        let selectItems = findObjArrWithIdArr(this.createList, this.selector)
         // 都是未提交的检查表
         if (!(selectItems.find(s => s.brief !== '未提交'))) {
           this.options = optionsAll.filter(o => o.value === 2 || o.value === 4)
@@ -129,7 +132,6 @@ export default {
           this.opeTitle = '请检查你选择的检查表能否进行批量操作'
         }
       }
-
       this.$_showActionSheet()
     },
     addCheck () {
@@ -140,6 +142,7 @@ export default {
     },
     $_selected (item) {
       console.log('action-sheet selected:', JSON.stringify(item))
+      // 操作
     }
   }
 }

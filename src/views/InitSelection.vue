@@ -63,7 +63,9 @@ export default {
   },
   methods: {
     addUsers () {
-      this.$router.push({ path: '/selectUsers' })
+      // 如果是管理员添加用户，则直接保存到user-role表中
+      // 如果是新建检查表添加用户，则先保存到本地sessionStorage中
+      this.$router.push({ name: 'selectUsers', params: { type: 1 } })
     }
   }
 }
