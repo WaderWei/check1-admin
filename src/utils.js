@@ -24,3 +24,9 @@ export function findObjArrWithIdArr (allArr, idArr) {
   }
   return selectItems
 }
+
+export function KeyboardJackUp () {
+  setTimeout(() => {
+    window.scrollTo(0, 0)
+  }, 200)
+}

@@ -140,4 +140,6 @@ export default {
     overflow:hidden;
     width: 82%;
   }
+  .create-contain{
+  }
 </style>

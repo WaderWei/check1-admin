@@ -11,18 +11,21 @@
             title="检查表名称"
             placeholder="请输入检查表名称"
             clearable
+            @blur="check"
           ></md-input-item>
           <md-input-item
             ref="deptInput"
             title="检查对象"
             placeholder="请输入部门/酒店"
             clearable
+            @blur="check"
           ></md-input-item>
           <md-input-item
             ref="reportPeriod"
             title="报告周期"
             placeholder="请输入报告周期"
             clearable
+            @blur="check"
           ></md-input-item>
           <select-item :title="checkUserTitle"
                        :select-type="checkUserType"
@@ -51,6 +54,7 @@
 import { InputItem, Field, Icon, Toast, ScrollView, Button, FieldItem } from 'mand-mobile'
 import BackBar from '../../components/BackBar'
 import SelectItem from '../../components/SelectItem'
+import { KeyboardJackUp } from '../../utils'
 const selectUser = 'selectUser'
 export default {
   name: 'CreateCheckTb',
@@ -102,6 +106,9 @@ export default {
     },
     saveCheckTb () {
 
+    },
+    check () {
+      KeyboardJackUp()
     }
   }
 }

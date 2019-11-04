@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { compileStr, uncompileStr } from '../utils'
+import { compileStr, uncompileStr, KeyboardJackUp } from '../utils'
 import { InputItem, Field, Icon, Dialog, Button, Switch } from 'mand-mobile'
 
 export default {
@@ -92,7 +92,7 @@ export default {
         this.isUserIdError = false
         this.userIdError = ''
       }
-      window.scroll(0, 0)
+      KeyboardJackUp()
     },
     checkPassword () {
       if (!this.password) {
@@ -102,7 +102,7 @@ export default {
         this.isPasswordError = false
         this.passwordError = ''
       }
-      window.scroll(0, 0)
+      KeyboardJackUp()
     },
     userIdTip () {
       Dialog.alert({
