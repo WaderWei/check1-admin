@@ -153,12 +153,15 @@ export default {
     }
   },
   created () {
+    let itemId = this.$route.params.type
+    if (itemId) {
+      this.title = '编辑检查项'
+    }
   },
   destroyed () {
   },
   methods: {
     saveCheckItem () {
-      console.log(this.imageList)
       this.$http.post('check/upload', {
         checkContent: this.checkContent,
         checkWay: this.checkWay,

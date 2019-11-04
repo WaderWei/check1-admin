@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     getList () {
-      // TODO wade userId，roleType作为参数给sq
       this.$http.get('check/findItemAll')
         .then(res => {
           if (res.code === 1) {
@@ -109,14 +108,26 @@ export default {
       this.$_showActionSheet()
     },
     addCheck () {
-      this.$router.push('/createCheckItem')
+      this.$router.push('createCheckItem')
     },
     $_showActionSheet () {
       this.isShoeSheet = true
     },
     $_selected (item) {
-      console.log('action-sheet selected:', JSON.stringify(item))
       // 操作
+      // 编辑
+      switch (item.value) {
+        // 编辑
+        case 1: {
+          console.log(this.selector)
+          this.$router.push({ name: 'createCheckItem', params: { type: this.selector[0] } })
+          break
+        }
+        // 删除
+        case 2: {
+          break
+        }
+      }
     }
   }
 }
