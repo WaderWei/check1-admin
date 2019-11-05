@@ -72,6 +72,7 @@ export default {
   },
   methods: {
     getList () {
+      // TODO wade userId，roleType作为参数给sq
       this.$http.get('check/findItemAll')
         .then(res => {
           if (res.code === 1) {
@@ -108,23 +109,22 @@ export default {
       this.$_showActionSheet()
     },
     addCheck () {
-      this.$router.push('createCheckItem')
+      this.$router.push('/createCheckItem')
     },
     $_showActionSheet () {
       this.isShoeSheet = true
     },
     $_selected (item) {
-      // 操作
-      // 编辑
       switch (item.value) {
         // 编辑
         case 1: {
-          console.log(this.selector)
-          this.$router.push({ name: 'createCheckItem', params: { type: this.selector[0] } })
+          // 如果是编辑模式，将id传递到创建检查项页面(请求后端)，然后赋值
+          console.log(this.selector[0])
           break
         }
         // 删除
         case 2: {
+          console.log(this.selector)
           break
         }
       }
@@ -149,7 +149,7 @@ export default {
     text-overflow:ellipsis;
     white-space: nowrap;
     overflow:hidden;
-    width: 82%;
+    margin: 0 30px;
   }
   .create-contain{
   }

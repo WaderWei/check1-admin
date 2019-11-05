@@ -6,7 +6,7 @@
       </div>
       <div class="s-btn">
         <md-button type="primary" round  icon="right" size="small" style="margin: 0 10px;font-size: 16px" @click="addUsers">添加</md-button>
-        <md-button type="warning" round  icon="delete" size="small" style="margin: 0 10px;font-size: 16px">删除</md-button>
+        <md-button type="warning" round  icon="delete" size="small" style="margin: 0 10px;font-size: 16px" @click="deleteUsers">删除</md-button>
       </div>
     </div>
     <div class="s-list" v-if="creator.length > 0">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { Field, CheckList, Button, ScrollView, ResultPage } from 'mand-mobile'
+import { Field, CheckList, Button, ScrollView, ResultPage, Dialog } from 'mand-mobile'
 
 export default {
   name: 'InitSelection',
@@ -37,6 +37,7 @@ export default {
     [Button.name]: Button,
     [ScrollView.name]: ScrollView,
     [ResultPage.name]: ResultPage,
+    [Dialog.name]: Dialog,
     [CheckList.name]: CheckList
   },
   data () {
@@ -46,15 +47,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('user/findCreator', { params: { roleType: 1 } })
-      .then(res => {
-        if (res.data.length > 0) {
-          this.creator = res.data
-        } else {
-          this.creator = []
-          this.selector = []
-        }
-      })
+    this.findUsers()
   },
   mounted () {
     const contain = document.querySelector('.select-contain')
@@ -62,10 +55,46 @@ export default {
     contain.style.height = (bodyHeight - 45) + 'px'
   },
   methods: {
+    findUsers () {
+      this.$http.get('user/findCreator')
+        .then(res => {
+          if (res.data.length > 0) {
+            this.creator = res.data
+          } else {
+            this.creator = []
+            this.selector = []
+          }
+        })
+    },
     addUsers () {
       // 如果是管理员添加用户，则直接保存到user-role表中
       // 如果是新建检查表添加用户，则先保存到本地sessionStorage中
       this.$router.push({ name: 'selectUsers', params: { type: 1 } })
+    },
+    deleteUsers () {
+      console.log(JSON.stringify(this.selector))
+      const arr = [1, 2, 3]
+      this.$http.delete('user/deleteCreator', { 'userids': arr })
+        .then(res => {
+          if (res.code === 1) {
+            Dialog.alert({
+              title: '成功',
+              content: '删除成功',
+              confirmText: '确定',
+              onConfirm: () => {
+                this.findUsers()
+              }
+            })
+          } else {
+            Dialog.failed({
+              title: '失败',
+              content: `删除失败，请稍后重试。<br/> 失败信息：` + res.msg,
+              confirmText: '确定'
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+        })
     }
   }
 }

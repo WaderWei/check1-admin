@@ -17,8 +17,7 @@ router.beforeEach((to, from, next) => {
     next()
     return
   }
-  store.commit('setToken', sessionStorage.getItem('token'))
-  if (store.state.token) {
+  if (sessionStorage.getItem('user')) {
     if (to.matched.length === 0) {
       console.log(to)
       console.log(from)
