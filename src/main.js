@@ -7,10 +7,12 @@ import 'mand-mobile/components/_style/global.styl'
 import 'normalize.css'
 import axios from 'axios'
 import setAxios from './axios/axiosconfig'
+import vuePicturePreview from 'vue-picture-preview'
 
 Vue.prototype.$http = axios
 setAxios()
 
+Vue.use(vuePicturePreview)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   if (to.name === 'login') {

@@ -14,6 +14,8 @@
               :options="createList"
             />
           </md-field>
+          <md-field style="visibility: hidden" title="Adjustment Style">
+          </md-field>
         </md-scroll-view>
       </div>
       <div  v-else style="width: 100%;">
@@ -145,7 +147,8 @@ export default {
       switch (item.value) {
         // 查看
         case 0: {
-          this.$router.push({ name: 'lookOver', params: { type: '1' } })
+          console.log(this.selector)
+          this.$router.push({ name: 'lookOver', params: { id: this.selector[0] } })
           break
         }
         // 编辑
@@ -181,6 +184,7 @@ export default {
     text-align: left;
   }
   .c-list{
+    text-align: left;
     height: 1100px;
   }
 </style>

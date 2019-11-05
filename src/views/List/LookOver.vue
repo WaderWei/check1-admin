@@ -1,5 +1,6 @@
 <template>
   <div class="lv-contain">
+    <lg-preview></lg-preview>
     <div class="lv-backBar">
       <back-bar v-bind:title="title" v-bind:type="type" ></back-bar>
     </div>
@@ -41,6 +42,8 @@
               <md-field-item title="证据必填" align="center" :placeholder="n.isProof" style="clear: both;white-space: nowrap;"/>
             </div>
           </div>
+        </md-field>
+        <md-field style="visibility: hidden" title="Adjustment Style">
         </md-field>
       </md-scroll-view>
     </div>
@@ -92,6 +95,14 @@ export default {
           checkContain: '2',
           imgs: [
             'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
+            'http://manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7',
+            'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
+            'http://manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7',
+            'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/6ee5a0ba9340ca452cbc827902e76be0',
+            'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/d751dd4487e265de3b8587f504eee2c3',
+            'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
+            'http://manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7',
+            'http://img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
             'http://manhattan.didistatic.com/static/manhattan/insurancePlatform_spu/uploads/c2912793a222eb24b606a582fd849ab7'
           ],
           bonus: '20',
@@ -117,6 +128,11 @@ export default {
         }
       ]
     }
+  },
+  created () {
+    const id = this.$route.params.id
+    // 根据id查询所有要展示的数据
+    console.log(id)
   },
   methods: {
   }

@@ -58,6 +58,25 @@ module.exports = {
           { value: 16, label: '大厅检查表5', brief: '未提交' },
           { value: 17, label: '大厅检查表6', brief: '未提交' }
         ]
+        let exeList = [
+          { value: 1, text: '大厅检查表1' },
+          { value: 2, text: '大厅检查表2' },
+          { value: 3, text: '大厅检查表3' },
+          { value: 4, text: '大厅检查表4' },
+          { value: 5, text: '大厅检查表5' },
+          { value: 6, text: '大厅检查表6' },
+          { value: 7, text: '大厅检查表7' },
+          { value: 8, text: '大厅检查表3' },
+          { value: 9, text: '大厅检查表4' },
+          { value: 10, text: '大厅检查表5' },
+          { value: 11, text: '大厅检查表6' },
+          { value: 12, text: '大厅检查表6' },
+          { value: 13, text: '大厅检查表7' },
+          { value: 14, text: '大厅检查表3' },
+          { value: 15, text: '大厅检查表4' },
+          { value: 16, text: '大厅检查表5' },
+          { value: 17, text: '大厅检查表6' }
+        ]
 
         let checkItemList = [
           { value: 1, label: '检查项目是的发放地方是的发放打发打发沙发斯蒂芬 阿斯蒂芬1' },
@@ -153,6 +172,14 @@ module.exports = {
             code: 1,
             msg: '',
             data: checkItemList
+          })
+        })
+
+        app.get('/exe/findExeList', (req, res) => {
+          res.json({
+            code: 1,
+            msg: '',
+            data: exeList
           })
         })
       }

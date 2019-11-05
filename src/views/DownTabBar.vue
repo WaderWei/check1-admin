@@ -55,7 +55,7 @@ export default {
       if (this.user[0].roleType === 0) {
         this.$router.push({ path: '/downTabBar/InitSelection' })
       } else {
-        this.$router.push({ path: '/downTabBar/index/createList' })
+        this.$router.push({ path: this.$route.path })
       }
     } else {
       this.current = 2

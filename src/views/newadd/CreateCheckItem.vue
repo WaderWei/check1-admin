@@ -112,6 +112,8 @@
             <md-button type="default" round @click="saveCheckItem">保存</md-button>
           </div>
         </md-field>
+        <md-field style="visibility: hidden" title="Adjustment Style">
+        </md-field>
       </md-scroll-view>
     </div>
   </div>

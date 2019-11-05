@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '../store/index'
 
-axios.defaults.baseURL = 'http://192.168.0.121:8080' // 'http://192.168.0.121:8080'
+axios.defaults.baseURL = 'http://192.168.0.104:8080' // 'http://192.168.0.121:8080'
 axios.defaults.timeout = 50000
 /* axios.create({
   baseURL: 'http://192.168.0.121:8080', // api 的 base_url

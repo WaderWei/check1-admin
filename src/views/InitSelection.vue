@@ -19,6 +19,8 @@
           :options="creator"
         />
       </md-field>
+        <md-field style="visibility: hidden" title="Adjustment Style">
+        </md-field>
     </md-scroll-view>
     </div>
     <div v-else style="width: 100%;">
@@ -52,7 +54,7 @@ export default {
   mounted () {
     const contain = document.querySelector('.select-contain')
     const bodyHeight = document.documentElement.clientHeight
-    contain.style.height = (bodyHeight - 45) + 'px'
+    contain.style.height = (bodyHeight - 80) + 'px'
   },
   methods: {
     findUsers () {

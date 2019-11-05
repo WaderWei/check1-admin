@@ -18,6 +18,8 @@
             icon="right"
           />
         </md-field>
+        <md-field style="visibility: hidden" title="Adjustment Style">
+        </md-field>
       </md-scroll-view>
     </div>
     <div  v-else style="width: 100%;">

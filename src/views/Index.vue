@@ -44,7 +44,7 @@ export default {
   mounted () {
     const contain = document.querySelector('.index-contain')
     const bodyHeight = document.documentElement.clientHeight
-    contain.style.height = (bodyHeight - 55) + 'px'
+    contain.style.height = (bodyHeight - 80) + 'px'
   },
   components: {
     [Popup.name]: Popup,

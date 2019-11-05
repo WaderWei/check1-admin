@@ -128,7 +128,7 @@ export default {
           }
           this.$store.commit('setToken', result.token)
           this.$store.commit('setUser', JSON.stringify(result.data))
-          this.$router.replace({ path: 'downTabBar' })
+          this.$router.replace({ path: 'downTabBar/index/createList' })
         } else {
           Dialog.alert({
             content: result.msg
