@@ -92,7 +92,7 @@ export default {
         this.isUserIdError = false
         this.userIdError = ''
       }
-      KeyboardJackUp()
+      // KeyboardJackUp()
     },
     checkPassword () {
       if (!this.password) {
@@ -178,7 +178,7 @@ export default {
     margin:0 50px;
   }
   .login-title{
-    margin: 200px 0 60px;
+    margin: 150px 0 60px;
   }
   .login-title .title{
     font-size: 40px;
@@ -194,7 +194,7 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
   .l-switch > span{
     margin-left: 10px;

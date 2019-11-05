@@ -115,8 +115,19 @@ export default {
       this.isShoeSheet = true
     },
     $_selected (item) {
-      console.log('action-sheet selected:', JSON.stringify(item))
-      // 操作
+      switch (item.value) {
+        // 编辑
+        case 1: {
+          // 如果是编辑模式，将id传递到创建检查项页面(请求后端)，然后赋值
+          console.log(this.selector[0])
+          break
+        }
+        // 删除
+        case 2: {
+          console.log(this.selector)
+          break
+        }
+      }
     }
   }
 }
@@ -138,7 +149,7 @@ export default {
     text-overflow:ellipsis;
     white-space: nowrap;
     overflow:hidden;
-    width: 82%;
+    margin: 0 30px;
   }
   .create-contain{
   }

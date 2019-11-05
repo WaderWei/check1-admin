@@ -142,7 +142,29 @@ export default {
     },
     $_selected (item) {
       console.log('action-sheet selected:', JSON.stringify(item))
-      // 操作
+      switch (item.value) {
+        // 查看
+        case 0: {
+          this.$router.push({ name: 'lookOver', params: { type: '1' } })
+          break
+        }
+        // 编辑
+        case 1: {
+          break
+        }
+        // 提交
+        case 2: {
+          break
+        }
+        // 作废
+        case 3: {
+          break
+        }
+        // 删除
+        case 4: {
+          break
+        }
+      }
     }
   }
 }

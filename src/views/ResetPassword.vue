@@ -127,7 +127,8 @@ export default {
       }
       this.loading = true
       this.inactive = true
-      this.$http.post('user/update', { params: { oldPwd: this.oldPassword, newPwd: this.newPassword1 } })
+      const currUser = JSON.parse(sessionStorage.getItem('user'))
+      this.$http.put('user/updatePwd', { userId: currUser[0].userId, oldPwd: this.oldPassword, newPwd: this.newPassword1 })
         .then(res => {
           if (res.code === 1) {
             Dialog.alert({
@@ -136,13 +137,14 @@ export default {
               confirmText: '确定',
               onConfirm: () => {
                 localStorage.removeItem('rememberInfo')
+                sessionStorage.removeItem('user')
                 this.$router.replace('/login')
               }
             })
           } else {
             Dialog.failed({
               title: '失败',
-              content: '操作失败，请稍后重试',
+              content: `操作失败，请稍后重试。<br/> 失败信息：` + res.msg,
               confirmText: '确定'
             })
           }

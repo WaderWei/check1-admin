@@ -42,6 +42,11 @@ export default new Router({
       component: () => import('../views/List/CheckItemList.vue')
     },
     {
+      path: '/lookOver',
+      name: 'lookOver',
+      component: () => import('../views/List/LookOver.vue')
+    },
+    {
       path: '/downTabBar',
       name: 'downTabBar',
       component: () => import('../views/DownTabBar.vue'),

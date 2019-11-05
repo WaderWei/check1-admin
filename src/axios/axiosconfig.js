@@ -1,8 +1,7 @@
 import axios from 'axios'
 import store from '../store/index'
-import router from '../router/index'
 
-axios.defaults.baseURL = 'http://192.168.0.120:8080' // 'http://192.168.0.121:8080'
+axios.defaults.baseURL = 'http://192.168.0.121:8080' // 'http://192.168.0.121:8080'
 axios.defaults.timeout = 50000
 /* axios.create({
   baseURL: 'http://192.168.0.121:8080', // api 的 base_url
@@ -23,15 +22,6 @@ export default function setAxios () {
     response => {
       if (response.status === 200) {
         const res = response.data
-        if (res.code !== 1) {
-          if (res.code === 0) {
-            store.commit('setToken', '')
-            // 跳转到登录页面
-            router.replace({ path: '/login' })
-          } else {
-            console.log(res.message)
-          }
-        }
         return res
       }
       /* if (response.status === 404 || response.status === 500) {
