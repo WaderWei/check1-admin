@@ -6,11 +6,17 @@
       </div>
       <div class="s-btn">
         <md-button type="primary" round  icon="right" size="small" style="margin: 0 10px;font-size: 16px" @click="addUsers">添加</md-button>
-        <md-button type="warning" round  icon="delete" size="small" style="margin: 0 10px;font-size: 16px" @click="deleteUsers">删除</md-button>
+        <md-button type="warning" round  icon="delete" size="small"
+                   style="margin: 0 10px;font-size: 16px"
+                   :loading="loading" :inactive="inactive"
+                   @click="deleteUsers">删除</md-button>
       </div>
     </div>
     <div class="s-list" v-if="creator.length > 0">
-      <md-scroll-view>
+      <md-scroll-view
+        :auto-reflow="true"
+        :scrolling-x="false"
+      >
       <md-field title="制定人列表">
         <md-check-list
           v-model="selector"
@@ -19,7 +25,7 @@
           :options="creator"
         />
       </md-field>
-        <md-field style="visibility: hidden" title="Adjustment Style">
+        <md-field style="height: 50px;visibility: hidden" title="Adjustment Style">
         </md-field>
     </md-scroll-view>
     </div>
@@ -45,22 +51,24 @@ export default {
   data () {
     return {
       selector: [],
-      creator: []
+      creator: [],
+      loading: false,
+      inactive: false
     }
   },
   created () {
     this.findUsers()
   },
   mounted () {
-    const contain = document.querySelector('.select-contain')
+    /* const contain = document.querySelector('.select-contain')
     const bodyHeight = document.documentElement.clientHeight
-    contain.style.height = (bodyHeight - 80) + 'px'
+    contain.style.height = (bodyHeight - 80) + 'px' */
   },
   methods: {
     findUsers () {
       this.$http.get('user/findCreator')
         .then(res => {
-          if (res.data.length > 0) {
+          if (res.code === 1) {
             this.creator = res.data
           } else {
             this.creator = []
@@ -71,32 +79,57 @@ export default {
     addUsers () {
       // 如果是管理员添加用户，则直接保存到user-role表中
       // 如果是新建检查表添加用户，则先保存到本地sessionStorage中
-      this.$router.push({ name: 'selectUsers', params: { type: 1 } })
+      this.$router.push({ name: 'selectUsers', query: { type: '1' } })
     },
     deleteUsers () {
-      console.log(JSON.stringify(this.selector))
-      const arr = [1, 2, 3]
-      this.$http.delete('user/deleteCreator', { 'userids': arr })
-        .then(res => {
-          if (res.code === 1) {
-            Dialog.alert({
-              title: '成功',
-              content: '删除成功',
-              confirmText: '确定',
-              onConfirm: () => {
-                this.findUsers()
+      if (this.selector.length === 0) {
+        Dialog.alert({
+          title: ' ',
+          content: '请选择要删除的制定人',
+          confirmText: '确定'
+        })
+        return
+      }
+
+      Dialog.confirm({
+        title: ' ',
+        content: '是否确定要删除此制定人，他的关联检查表也会被删除',
+        confirmText: '确定',
+        onConfirm: () => {
+          this.loading = true
+          this.inactive = true
+          let qs = this.$qs
+          this.$http.delete('user/deleteCreator',
+            {
+              params: {
+                userIds: this.selector
+              },
+              paramsSerializer: params => {
+                return qs.stringify(params, { indices: false })
+              } })
+            .then(res => {
+              if (res.code === 1) {
+                Dialog.alert({
+                  title: ' ',
+                  content: '删除成功',
+                  confirmText: '确定',
+                  onConfirm: () => {
+                    this.findUsers()
+                  }
+                })
+              } else {
+                Dialog.failed({
+                  title: ' ',
+                  content: `删除失败，请稍后重试。<br/> 失败信息：` + res.msg,
+                  confirmText: '确定'
+                })
               }
             })
-          } else {
-            Dialog.failed({
-              title: '失败',
-              content: `删除失败，请稍后重试。<br/> 失败信息：` + res.msg,
-              confirmText: '确定'
-            })
-          }
-        }).catch(err => {
-          console.log(err)
-        })
+          this.selector = []
+          this.loading = false
+          this.inactive = false
+        }
+      })
     }
   }
 }
@@ -104,8 +137,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .select-contain{
+    height 100%
+  }
   .s-list{
-    height 1000px
+    height 80%
     background #FFF
     text-align left
   }

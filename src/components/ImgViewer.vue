@@ -1,7 +1,7 @@
 <template>
   <div class="imgs">
-    <div style="width: 40%;margin: 10px 10px 0" v-for="(item, index) in images" v-preview="item" :key="index">
-      <img :src="item" :key="index"
+    <div style="width: 40%;margin: 10px 10px 0" v-for="(item, index) in images" v-preview="item.url" :key="index">
+      <img :src="item.url" :key="index"
            style="width: 100%;"
            preview-title-enable="true"
            preview-nav-enable="true"/>
@@ -38,5 +38,5 @@ export default {
     flex-direction row
     flex-wrap wrap
     justify-content center
-    border 2px solid #cddbe6
+    // border 2px solid #cddbe6
 </style>

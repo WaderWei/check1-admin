@@ -1,0 +1,29 @@
+<svg id="exeCheck" xmlns="http://www.w3.org/2000/svg" width="44.344" height="48.656" viewBox="0 0 44.344 48.656">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #000;
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        stroke-linecap: round;
+        stroke-width: 2.4px;
+      }
+
+      .cls-2 {
+        stroke-linecap: square;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <path id="圆角矩形_7" data-name="圆角矩形 7" class="cls-1" d="M242.79,213.176H222.925a8,8,0,0,1-8-8V174.925a8,8,0,0,1,8-8h25.626a8,8,0,0,1,8,8v10.206" transform="translate(-213.719 -165.719)"/>
+  <g id="组_3" data-name="组 3">
+    <path id="形状_1" data-name="形状 1" class="cls-1" d="M223.025,176.875h20.351" transform="translate(-213.719 -165.719)"/>
+    <path id="形状_1_拷贝" data-name="形状 1 拷贝" class="cls-1" d="M223.025,183.976h20.351" transform="translate(-213.719 -165.719)"/>
+    <path id="形状_1_拷贝_2" data-name="形状 1 拷贝 2" class="cls-1" d="M223.025,192.151h14.351" transform="translate(-213.719 -165.719)"/>
+    <path id="形状_4" data-name="形状 4" class="cls-2" d="M242.944,202.18l5.281-.832,0.46,10.761,8.386-15.524-5.281.832-0.423-10.526Z" transform="translate(-213.719 -165.719)"/>
+  </g>
+</svg>

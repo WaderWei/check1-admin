@@ -1,0 +1,13 @@
+<svg id="menu" xmlns="http://www.w3.org/2000/svg" width="21" height="25" viewBox="0 0 21 25">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fe2b22;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="矩形_1" data-name="矩形 1" class="cls-1" d="M44,256H65v2.788H44V256Z" transform="translate(-44 -256)"/>
+  <path id="矩形_1_拷贝" data-name="矩形 1 拷贝" class="cls-1" d="M44,267.122H65v2.756H44v-2.756Z" transform="translate(-44 -256)"/>
+  <path id="矩形_1_拷贝_2" data-name="矩形 1 拷贝 2" class="cls-1" d="M44,278.212H65V281H44v-2.788Z" transform="translate(-44 -256)"/>
+</svg>

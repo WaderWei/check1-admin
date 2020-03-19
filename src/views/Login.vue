@@ -92,7 +92,7 @@ export default {
         this.isUserIdError = false
         this.userIdError = ''
       }
-      // KeyboardJackUp()
+      KeyboardJackUp()
     },
     checkPassword () {
       if (!this.password) {
@@ -106,15 +106,18 @@ export default {
     },
     userIdTip () {
       Dialog.alert({
-        content: '输入你的OA用户名'
+        title: ' ',
+        content: '输入您的OA用户名'
       })
     },
     passwordTip () {
       Dialog.alert({
-        content: '输入你的OA密码'
+        title: ' ',
+        content: '默认密码：11'
       })
     },
     async login () {
+      // KeyboardJackUp()
       if (!this.isUserIdError && !this.isPasswordError) {
         this.loading = true
         this.inactive = true
@@ -128,9 +131,29 @@ export default {
           }
           this.$store.commit('setToken', result.token)
           this.$store.commit('setUser', JSON.stringify(result.data))
-          this.$router.replace({ path: 'downTabBar/index/createList' })
+          let roleTypes = result.data.map(r => {
+            return r.roleType
+          })
+          if (roleTypes.indexOf(1) !== -1) {
+            this.$router.replace({ path: 'downTabBar/index/createList' })
+            return
+          }
+          if (roleTypes.indexOf(2) !== -1) {
+            this.$router.replace({ path: 'downTabBar/index/checkList' })
+            return
+          }
+          if (roleTypes.indexOf(3) !== -1) {
+            this.$router.replace({ path: 'downTabBar/index/exeList' })
+            return
+          }
+          if (roleTypes.indexOf(4) !== -1) {
+            this.$router.replace({ path: 'downTabBar/index/receiveReportList' })
+            return
+          }
+          this.$router.replace({ path: 'downTabBar/home' })
         } else {
           Dialog.alert({
+            title: ' ',
             content: result.msg
           })
         }

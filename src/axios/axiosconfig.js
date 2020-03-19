@@ -1,7 +1,8 @@
 import axios from 'axios'
-import store from '../store/index'
+import { Toast } from 'mand-mobile'
 
-axios.defaults.baseURL = 'http://192.168.0.104:8080' // 'http://192.168.0.121:8080'
+// axios.defaults.baseURL = 'http://192.168.0.121:7777'
+axios.defaults.baseURL = 'http://223.240.65.137:7777'
 axios.defaults.timeout = 50000
 /* axios.create({
   baseURL: 'http://192.168.0.121:8080', // api 的 base_url
@@ -11,8 +12,11 @@ axios.defaults.timeout = 50000
 export default function setAxios () {
   axios.interceptors.request.use(
     request => {
-      if (store.state.token) {
-        request.headers.token = store.state.token
+      if (!(request.url === 'user/login' || request.url === 'check/editNew' || request.url === 'user/userListByLike' ||
+        request.url === 'report/editAddReport' || request.url === 'report/findReportItem' || request.url === 'checkItem/examineCheckItem' ||
+        request.url === 'report/queryDep' || request.url === 'file/fileList'
+      )) {
+        Toast.loading('加载中...')
       }
       return request
     }
@@ -20,14 +24,16 @@ export default function setAxios () {
 
   axios.interceptors.response.use(
     response => {
+      Toast.hide()
       if (response.status === 200) {
-        const res = response.data
-        return res
+        return response.data
+      } else {
+        return Promise.reject(response)
       }
-      /* if (response.status === 404 || response.status === 500) {
-        this.$router.replace({ path: '/FZF' })
-      } */
-      return response
+    },
+    error => {
+      Toast.hide()
+      return Promise.reject(error.response.status)
     }
   )
 }

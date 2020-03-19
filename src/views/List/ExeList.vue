@@ -1,14 +1,17 @@
 <template>
   <div class="create-contain">
     <div class="c-list" v-if="exeList.length > 0">
-      <md-scroll-view>
+      <md-scroll-view
+        :auto-reflow="true"
+        :scrolling-x="false"
+      >
         <md-field title="执行的检查表">
           <md-radio-list
             :options="exeList"
             @change="$_showActionSheet"
           />
         </md-field>
-        <md-field style="visibility: hidden" title="Adjustment Style">
+        <md-field style="margin-top: 50px;visibility: hidden" title="Adjustment Style">
         </md-field>
       </md-scroll-view>
     </div>
@@ -31,6 +34,7 @@
 
 <script>
 import { Icon, Field, ActionSheet, ScrollView, RadioList, ResultPage, Dialog } from 'mand-mobile'
+import { getUser } from '../../utils'
 export default {
   name: 'ExeList',
   components: {
@@ -45,7 +49,7 @@ export default {
   data () {
     return {
       exeList: [],
-      opeTitle: '操作',
+      opeTitle: '请选择操作',
       selectId: -1,
       isShoeSheet: false,
       defaultIndex: 0,
@@ -63,14 +67,16 @@ export default {
   },
   methods: {
     getList () {
-      // TODO wade userId，roleType作为参数给sq
-      this.$http.get('exe/findExeList')
+      // todo 这里还要给roleType
+      this.$http.get('check/findCheckList', { params: {
+        userId: getUser()[0].userId,
+        roleType: 3
+      } })
         .then(res => {
           if (res.code === 1) {
             this.exeList = res.data
           } else {
             this.exeList = []
-            console.log('createList:' + res.msg)
           }
         })
     },
@@ -79,7 +85,7 @@ export default {
       this.isShoeSheet = true
     },
     $_selected (item) {
-      this.$router.push({ name: 'lookOver', params: { id: this.selectId } })
+      this.$router.push({ name: 'lookOver', query: { id: this.selectId } })
     }
   }
 }

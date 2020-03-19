@@ -1,0 +1,22 @@
+<svg id="createCheck" xmlns="http://www.w3.org/2000/svg" width="44" height="48.625" viewBox="0 0 44 48.625">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-width: 2.4px;
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+  <path id="圆角矩形_7" data-name="圆角矩形 7" class="cls-1" d="M73.938,166.937H99.563a8,8,0,0,1,8,8v30.25a8,8,0,0,1-8,8H73.938a8,8,0,0,1-8-8v-30.25A8,8,0,0,1,73.938,166.937Z" transform="translate(-64.75 -165.75)"/>
+  <g id="组_3" data-name="组 3">
+    <path id="形状_1" data-name="形状 1" class="cls-2" d="M77.025,179.875H97.376" transform="translate(-64.75 -165.75)"/>
+    <path id="形状_1_拷贝" data-name="形状 1 拷贝" class="cls-2" d="M77.025,190.976H97.376" transform="translate(-64.75 -165.75)"/>
+    <path id="形状_1_拷贝_2" data-name="形状 1 拷贝 2" class="cls-2" d="M77.025,201.151H97.376" transform="translate(-64.75 -165.75)"/>
+  </g>
+</svg>

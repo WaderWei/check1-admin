@@ -9,12 +9,12 @@
         <md-tab-bar
           v-model="current"
           :items="items"
-          :has-ink="true"
+          :has-ink="false"
           :immediate="false"
           @change="changeBar"
         >
           <template slot="item" slot-scope="{ item }">
-            <div class="custom-item">
+            <div class="custom-item" :style="{ color: current === item.name ? 'red':''}">
               <div class="icon">
                 <md-icon :name="item.icon" />
               </div>
@@ -70,7 +70,27 @@ export default {
           if (this.user[0].roleType === 0) {
             this.$router.push({ path: '/downTabBar/InitSelection' })
           } else {
-            this.$router.push({ path: '/downTabBar/index/createList' })
+            // this.$router.push({ path: '/downTabBar/index/createList' })
+            let roleTypes = this.user.map(r => {
+              return r.roleType
+            })
+            if (roleTypes.indexOf(1) !== -1) {
+              this.$router.replace({ path: '/downTabBar/index/createList' })
+              return
+            }
+            if (roleTypes.indexOf(2) !== -1) {
+              this.$router.replace({ path: '/downTabBar/index/checkList' })
+              return
+            }
+            if (roleTypes.indexOf(3) !== -1) {
+              this.$router.replace({ path: '/downTabBar/index/exeList' })
+              return
+            }
+            if (roleTypes.indexOf(4) !== -1) {
+              this.$router.replace({ path: '/downTabBar/index/receiveReportList' })
+              return
+            }
+            this.$router.replace({ path: '/downTabBar/home' })
           }
           break
         }
@@ -108,5 +128,8 @@ export default {
     opacity: 0;
     -webkit-transform: translate(-100%, 0);
     transform :translate(-100%, 0);
+  }
+  .custom-item{
+  /* color: red;*/
   }
 </style>

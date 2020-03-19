@@ -9,7 +9,7 @@
     <script>
       (function(window, document) {
         function resize() {
-          var ww = window.innerWidth
+          let ww = window.innerWidth
           if (ww > window.screen.width) {
             window.requestAnimationFrame(resize)
           } else {
@@ -32,7 +32,7 @@
     </script>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app" style="height: 100%"></div>
     <!-- built files will be auto injected -->
   </body>
 </html>

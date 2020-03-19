@@ -1,10 +1,13 @@
 <template>
   <div>
-    <md-field-item class="i-f-i" solid  :title="title" arrow content="请选择" @click="selectUser">
+    <md-field-item class="i-f-i" align="right" solid  :title="title" arrow content="  请选择" @click="selectUser">
     </md-field-item>
-    <div class = 'user-item'>
-      <div class="i-item" v-for="user in selectUsers" :key="user.value">
-        <span class="i-name">{{user.label}}</span><span class="i-cha" @click="removeUser(user.value)">×</span>
+    <div class="user-con">
+      <div class="user-title" v-if="selectUsers.length > 0">已选检查人</div>
+      <div class = 'user-item'>
+        <div class="i-item" v-for="user in selectUsers" :key="user.value">
+          <span class="i-name">{{user.label}}</span><span class="i-cha" @click="removeUser(user.value)">×</span>
+        </div>
       </div>
     </div>
   </div>
@@ -30,11 +33,15 @@ export default {
     }
   },
   created () {
-
+  },
+  watch: {
+    selectUserArr (n, o) {
+      this.selectUsers = n
+    }
   },
   methods: {
     selectUser () {
-      this.$router.push({ name: 'selectUsers', params: { type: this.selectType } })
+      this.$router.push({ name: 'selectUsers', query: { type: this.selectType } })
     },
     removeUser (value) {
       let newArr = this.selectUsers.filter(s => s.value !== value)
@@ -46,6 +53,16 @@ export default {
 </script>
 
 <style scoped>
+  .user-con{
+    display: -webkit-flex;
+    display: flex;
+  }
+  .user-title{
+    font-size: 0.32rem;
+    color: #cbcbcb;
+    white-space: nowrap;
+    margin-top: 30px;
+  }
 .user-item{
   display: -webkit-flex;
   display: flex;
@@ -56,16 +73,21 @@ export default {
   text-align: center;
 }
   .i-item{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border-radius: 8%;
     align-items: center;
     padding: 10px;
-    background-color: lightblue;
+    background-color: white;
+    border: 1px solid red;
     margin: 5px 15px;
+    color: red;
+    width: 130px;
   }
   .i-cha{
-    padding: 0 10px;
     border-radius: 100%;
-    margin-left: 20px;
   }
   .i-cha:hover{
     background-color: #5063e6;

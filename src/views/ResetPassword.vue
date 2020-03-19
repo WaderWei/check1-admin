@@ -32,6 +32,7 @@
           >{{newPasswordError1}}</p>
         </md-input-item>
         <md-input-item
+          :solid="false"
           type="password"
           title="确认新密码"
           placeholder="请再次输入新的密码"
@@ -47,7 +48,7 @@
     </form>
     </div>
     <div class="l-btn">
-      <md-button type="warning" round @click="updatePws" :loading="loading" :inactive="inactive">修改密码</md-button>
+      <md-button type="default" round @click="updatePws" :loading="loading" :inactive="inactive">修改密码</md-button>
     </div>
   </div>
 </template>
@@ -132,26 +133,24 @@ export default {
         .then(res => {
           if (res.code === 1) {
             Dialog.alert({
-              title: '成功',
+              title: ' ',
               content: '修改密码成功,请重新登录',
               confirmText: '确定',
               onConfirm: () => {
                 localStorage.removeItem('rememberInfo')
                 sessionStorage.removeItem('user')
-                this.$router.replace('/login')
+                this.$router.replace('/')
               }
             })
           } else {
             Dialog.failed({
-              title: '失败',
+              title: ' ',
               content: `操作失败，请稍后重试。<br/> 失败信息：` + res.msg,
               confirmText: '确定'
             })
           }
           this.loading = false
           this.inactive = false
-        }).catch(error => {
-          console.log(error)
         })
     }
   }

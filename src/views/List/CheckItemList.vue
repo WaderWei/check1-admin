@@ -4,11 +4,14 @@
       <back-bar v-bind:title="title" :type="type"></back-bar>
     </div>
     <div class="c-btn">
-      <md-button type="link" icon="right" style="padding: 15px" @click="addCheck">新增</md-button>
-      <md-button type="link" icon="edit"  style="padding: 15px" @click="operate">操作</md-button>
+      <md-button type="link" icon="right" style="padding: 15px;color: red" @click="addCheckItem">新增</md-button>
+      <md-button type="link" icon="edit"  style="padding: 15px;color: red" @click="operate">操作</md-button>
     </div>
     <div class="c-list" v-if="checkItemList.length > 0">
-      <md-scroll-view>
+      <md-scroll-view
+        :auto-reflow="true"
+        :scrolling-x="false"
+      >
         <md-field title="检查项目列表">
           <md-check-list
             v-model="selector"
@@ -18,7 +21,7 @@
             icon="right"
           />
         </md-field>
-        <md-field style="visibility: hidden" title="Adjustment Style">
+        <md-field style="margin-top: 50px;visibility: hidden" title="Adjustment Style">
         </md-field>
       </md-scroll-view>
     </div>
@@ -64,7 +67,8 @@ export default {
       opeTitle: '',
       isShoeSheet: false,
       defaultIndex: 0,
-      options: []
+      options: [],
+      checkId: -1
     }
   },
   created () {
@@ -74,21 +78,22 @@ export default {
   },
   methods: {
     getList () {
-      // TODO wade userId，roleType作为参数给sq
-      this.$http.get('check/findItemAll')
+      this.checkId = this.$route.query.checkId
+      this.$http.get('checkItem/findCheckItem', { params: {
+        checkId: this.checkId
+      } })
         .then(res => {
           if (res.code === 1) {
             this.checkItemList = res.data
           } else {
             this.checkItemList = []
-            console.log('checkItemList:' + res.msg)
           }
         })
     },
     operate () {
       if (this.selector.length === 0) {
         Dialog.alert({
-          title: '警告',
+          title: ' ',
           content: '请先选择要操作的检查项目',
           confirmText: '确定'
         })
@@ -100,7 +105,8 @@ export default {
         this.opeTitle = '[单个]检查项目操作权限'
         this.options = [
           { label: '编辑', value: 1 },
-          { label: '删除', value: 2 }
+          { label: '删除', value: 2 },
+          { label: '插入', value: 3 }
         ]
       } else {
         this.opeTitle = '[批量]检查项目操作权限'
@@ -110,8 +116,8 @@ export default {
       }
       this.$_showActionSheet()
     },
-    addCheck () {
-      this.$router.push('/createCheckItem')
+    addCheckItem () {
+      this.$router.push({ name: 'createCheckItem', query: { id: -1, checkId: this.checkId } })
     },
     $_showActionSheet () {
       this.isShoeSheet = true
@@ -121,12 +127,46 @@ export default {
         // 编辑
         case 1: {
           // 如果是编辑模式，将id传递到创建检查项页面(请求后端)，然后赋值
-          console.log(this.selector[0])
+          this.$router.push({ name: 'createCheckItem', query: { id: this.selector[0], checkId: this.checkId } })
           break
         }
         // 删除
         case 2: {
-          console.log(this.selector)
+          Dialog.confirm({
+            title: ' ',
+            content: '是否确定要删除',
+            onConfirm: () => {
+              let qs = this.$qs
+              this.$http.delete('checkItem/deleteCheckItem',
+                { params: {
+                  ids: this.selector
+                },
+                paramsSerializer: params => {
+                  return qs.stringify(params, { indices: false })
+                } }).then(res => {
+                if (res.code === 1) {
+                  Dialog.alert({
+                    title: ' ',
+                    content: '删除成功',
+                    onConfirm: () => {
+                      this.getList()
+                      this.selector = []
+                    }
+                  })
+                } else {
+                  Dialog.alert({
+                    title: ' ',
+                    content: '失败信息：' + res.msg
+                  })
+                }
+              })
+            }
+          })
+          break
+        }
+        // 插入
+        case 3: {
+          this.$router.push({ name: 'createCheckItem', query: { id: this.selector[0], checkId: this.checkId, handle: 1 } })
           break
         }
       }
@@ -146,13 +186,14 @@ export default {
     text-align: left;
   }
   .c-list{
-    height: 1200px;
     text-align: left;
     text-overflow:ellipsis;
     white-space: nowrap;
     overflow:hidden;
     margin: 0 30px;
+    height: 80%;
   }
   .create-contain{
+    height: 100%;
   }
 </style>

@@ -7,6 +7,16 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/',
+      name: 'ad',
+      component: () => import('../views/AD.vue')
+    },
+    {
+      path: '/ad',
+      name: 'ad',
+      component: () => import('../views/AD.vue')
+    },
+    {
       path: '/index',
       name: 'index',
       component: () => import('../views/DownTabBar.vue')
@@ -20,6 +30,11 @@ export default new Router({
       path: '/selectUsers',
       name: 'selectUsers',
       component: () => import('../views/SelectUsers.vue')
+    },
+    {
+      path: '/sentSelectUsers',
+      name: 'sentSelectUsers',
+      component: () => import('../views/SentSelectUsers.vue')
     },
     {
       path: '/resetPassword',
@@ -45,6 +60,16 @@ export default new Router({
       path: '/lookOver',
       name: 'lookOver',
       component: () => import('../views/List/LookOver.vue')
+    },
+    {
+      path: '/reportLookOver',
+      name: 'reportLookOver',
+      component: () => import('../views/List/ReportLookOver.vue')
+    },
+    {
+      path: '/createReport',
+      name: 'createReport',
+      component: () => import('../views/newadd/CreateReport.vue')
     },
     {
       path: '/downTabBar',
@@ -100,6 +125,21 @@ export default new Router({
       path: '/FZF',
       name: 'FZF',
       component: () => import('../views/FZF.vue')
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: () => import('../views/test.vue')
+    },
+    {
+      path: '/selectDept',
+      name: 'selectDept',
+      component: () => import('../views/SelectDept.vue')
+    },
+    {
+      path: '/compareReport',
+      name: 'compareReport',
+      component: () => import('../views/CompareReport.vue')
     }
   ]
 })

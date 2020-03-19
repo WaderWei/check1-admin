@@ -1,0 +1,20 @@
+<svg id="receiveReport" xmlns="http://www.w3.org/2000/svg" width="45.281" height="48.656" viewBox="0 0 45.281 48.656">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 2.4px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="圆角矩形_7" data-name="圆角矩形 7" class="cls-1" d="M534,213c-7.556,0-26.075.176-26.075,0.176a8,8,0,0,1-8-8V174.925a8,8,0,0,1,8-8h25.626a8,8,0,0,1,8,8S542,179.324,542,187" transform="translate(-498.719 -165.719)"/>
+  <g id="组_3" data-name="组 3">
+    <path id="形状_1" data-name="形状 1" class="cls-1" d="M508.025,176.875h20.351" transform="translate(-498.719 -165.719)"/>
+    <path id="形状_1_拷贝" data-name="形状 1 拷贝" class="cls-1" d="M508.025,183.976h20.351" transform="translate(-498.719 -165.719)"/>
+    <path id="形状_1_拷贝_2" data-name="形状 1 拷贝 2" class="cls-1" d="M508.025,192.151h14.351" transform="translate(-498.719 -165.719)"/>
+    <path id="形状_5" data-name="形状 5" class="cls-1" d="M526.23,203.081l7.235,5.252,9.333-15.165" transform="translate(-498.719 -165.719)"/>
+  </g>
+</svg>

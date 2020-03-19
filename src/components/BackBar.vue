@@ -3,7 +3,7 @@
       <div @click="goBack" class="b-back">
         <md-icon name="arrow-left" size="lg" ></md-icon>返回
       </div>
-      <div class="b-title">
+      <div class="b-title" style="color: red">
         {{title}}
       </div>
       <div class="b-clear" @click="$emit('receive')">
@@ -35,7 +35,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: #4C83E8;
+    background: white;
     align-items: center;
     height: 120px;
     font-size: 40px;
@@ -43,8 +43,10 @@ export default {
   }
   .b-back{
     margin-left: 20px;
+    color: black;
   }
   .b-clear{
     margin-right: 20px;
+    color: black;
   }
 </style>

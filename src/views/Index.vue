@@ -1,7 +1,9 @@
 <template>
   <div class="index-contain">
     <div class="i-title">
-      <md-button type="link" size="large" icon="arrow-right" @click="showPopUp('left')">展开</md-button>
+      <md-button type="link" size="large" @click="showPopUp('left')" style="color: red">
+        <span style="line-height: 13px;font-size: 16px"><img src="../my-svg/menu.svg" style="width:20px;height: 13px;margin-right: 10px;line-height: 13px"/>菜单</span>
+      </md-button>
     </div>
     <div class="i-router">
       <router-view/>
@@ -11,25 +13,25 @@
       position="left"
     >
       <div class="md-example-popup md-example-popup-left">
-        <div>
-          <md-icon name="address-book" :color="selectItem === 0 ? 'blue' : ''" size="lg"></md-icon>
-          <md-field-item solid title="制定的表" :class="selectItem === 0 ? 'selectItemSty' :''" arrow @click="createList('left')" />
+        <div v-if="userRole.indexOf(1) > -1">
+          <img src="../my-svg/createCheck.svg" class="imgSty"/>
+          <md-field-item solid title="创建的表" :class="selectItem === 0 ? 'selectItemSty' :''" arrow @click="createList('left')" />
         </div>
-        <div>
-          <md-icon name="edit" size="lg" :color="selectItem === 1 ? 'blue' : ''"></md-icon>
+        <div v-if="userRole.indexOf(3) > -1">
+          <img src="../my-svg/exeCheck.svg" class="imgSty"/>
           <md-field-item solid title="要执行的表" :class="selectItem === 1 ? 'selectItemSty' :''" arrow @click="exeList('left')" />
         </div>
-        <div>
-          <md-icon name="filter" size="lg" :color="selectItem === 2 ? 'blue' : ''"></md-icon>
+        <div v-if="userRole.indexOf(2) > -1">
+          <img src="../my-svg/waitCheck.svg" class="imgSty"/>
           <md-field-item solid title="待检查的表" :class="selectItem === 2 ? 'selectItemSty' :''" arrow @click="checkList('left')" />
         </div>
-        <div>
-          <md-icon name="order" size="lg" :color="selectItem === 3 ? 'blue' : ''"></md-icon>
-          <md-field-item solid title="收到的报告" :class="selectItem === 3 ? 'selectItemSty' :''" arrow @click="receiveReport('left')" />
+        <div v-if="userRole.indexOf(2) > -1">
+          <img src="../my-svg/postReport.svg" class="imgSty"/>
+          <md-field-item solid title="生成的报告" :class="selectItem === 3 ? 'selectItemSty' :''" arrow @click="postReport('left')" />
         </div>
-        <div>
-          <md-icon name="share" size="lg" :color="selectItem === 4 ? 'blue' : ''"></md-icon>
-          <md-field-item solid title="提交的报告" :class="selectItem === 4 ? 'selectItemSty' :''" arrow @click="postReport('left')" />
+        <div v-if="userRole.indexOf(4) > -1">
+          <img src="../my-svg/receiveReport.svg" class="imgSty"/>
+          <md-field-item solid title="收到的报告" :class="selectItem === 4 ? 'selectItemSty' :''" arrow @click="receiveReport('left')" />
         </div>
       </div>
     </md-popup>
@@ -38,13 +40,13 @@
 
 <script>
 import { Popup, FieldItem, PopupTitleBar, Button, Icon } from 'mand-mobile'
-
+import { getUser } from '../utils'
 export default {
   name: 'Index',
   mounted () {
-    const contain = document.querySelector('.index-contain')
+    /* const contain = document.querySelector('.index-contain')
     const bodyHeight = document.documentElement.clientHeight
-    contain.style.height = (bodyHeight - 80) + 'px'
+    contain.style.height = (bodyHeight - 80) + 'px' */
   },
   components: {
     [Popup.name]: Popup,
@@ -56,7 +58,43 @@ export default {
   data () {
     return {
       isPopupShow: {},
-      selectItem: 0
+      selectItem: 0,
+      userRole: []
+    }
+  },
+  created () {
+    this.userRole = getUser().map(function (u) {
+      return u.roleType
+    })
+    const routeName = this.$route.name
+    switch (routeName) {
+      case 'createList': {
+        this.selectItem = 0
+        break
+      }
+      case 'exeList': {
+        this.selectItem = 1
+        break
+      }
+      case 'checkList': {
+        this.selectItem = 2
+        break
+      }
+      case 'postReportList': {
+        this.selectItem = 3
+        break
+      }
+      case 'receiveReportList': {
+        this.selectItem = 4
+        break
+      }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      if (to.name === 'postReportList' && to.query.checkId) {
+        this.selectItem = 3
+      }
     }
   },
   methods: {
@@ -81,13 +119,13 @@ export default {
       this.$set(this.isPopupShow, type, false)
       this.selectItem = 2
     },
-    receiveReport (type) {
-      this.$router.push('/downTabBar/index/receiveReportList')
+    postReport (type) {
+      this.$router.push('/downTabBar/index/postReportList')
       this.$set(this.isPopupShow, type, false)
       this.selectItem = 3
     },
-    postReport (type) {
-      this.$router.push('/downTabBar/index/postReportList')
+    receiveReport (type) {
+      this.$router.push('/downTabBar/index/receiveReportList')
       this.$set(this.isPopupShow, type, false)
       this.selectItem = 4
     }
@@ -97,6 +135,9 @@ export default {
 
 <style scoped>
   .index-contain {
+  }
+  .i-router{
+    height: 100%;
   }
   .i-title{
     text-align: left;
@@ -129,6 +170,10 @@ export default {
     justify-content: space-between;
   }
   .selectItemSty{
-    color: blue;
+    color: red;
+  }
+  .imgSty{
+    height: 40px;
+    margin-right: 10px;
   }
 </style>

@@ -1,0 +1,32 @@
+<svg id="postReport" xmlns="http://www.w3.org/2000/svg" width="52.187" height="48.656" viewBox="0 0 52.187 48.656">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke: #000;
+        fill-rule: evenodd;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 2.4px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="组_3" data-name="组 3">
+    <path id="圆角矩形_7_拷贝" data-name="圆角矩形 7 拷贝" class="cls-1" d="M682.551,205.176a8.121,8.121,0,0,1-.119,1.387,8,8,0,0,1-7.881,6.613H648.925a8,8,0,0,1-8-8V174.925a8,8,0,0,1,8-8h25.626a8,8,0,0,1,8,8v5.59" transform="translate(-639.719 -165.719)"/>
+    <path id="形状_1" data-name="形状 1" class="cls-2" d="M649.025,176.875h20.351" transform="translate(-639.719 -165.719)"/>
+    <path id="形状_1_拷贝" data-name="形状 1 拷贝" class="cls-2" d="M649.025,183.976h20.351" transform="translate(-639.719 -165.719)"/>
+    <path id="形状_1_拷贝_2" data-name="形状 1 拷贝 2" class="cls-2" d="M649.025,192.151h14.351" transform="translate(-639.719 -165.719)"/>
+    <g id="组_5" data-name="组 5">
+      <path id="形状_3" data-name="形状 3" class="cls-3" d="M682.774,201.267l7.788-8.34-7.009-8.34-0.779,5.065s-11.68-.7-11.68,11.615c5.483-5.677,6.091-5.308,7.787-5.308h3.893v5.308Z" transform="translate(-639.719 -165.719)"/>
+    </g>
+  </g>
+</svg>
