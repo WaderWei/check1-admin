@@ -16,14 +16,20 @@
 import { Icon, Button } from 'mand-mobile'
 export default {
   name: 'BackBar',
-  props: ['title', 'type'],
+  props: ['title', 'type', 'pageNum'],
   components: {
     [Icon.name]: Icon,
     [Button.name]: Button
   },
+  created () {
+  },
   methods: {
     goBack () {
-      this.$router.go(-1)
+      if (this.pageNum === 1) {
+        this.$store.commit('setUserPage', false)
+      } else {
+        this.$router.go(-1)
+      }
     }
   }
 }

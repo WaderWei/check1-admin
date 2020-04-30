@@ -52,11 +52,7 @@ export default {
   created () {
     if (this.$route.name !== 'home') {
       this.current = 1
-      if (this.user[0].roleType === 0) {
-        this.$router.push({ path: '/downTabBar/InitSelection' })
-      } else {
-        this.$router.push({ path: this.$route.path })
-      }
+      this.$router.push({ path: this.$route.path, query: this.$route.query })
     } else {
       this.current = 2
       this.$router.push({ path: '/downTabBar/home' })
@@ -68,7 +64,7 @@ export default {
         case 0: {
           this.current = 1
           if (this.user[0].roleType === 0) {
-            this.$router.push({ path: '/downTabBar/InitSelection' })
+            this.$router.push({ path: '/downTabBar/adminIndex/InitSelection' })
           } else {
             // this.$router.push({ path: '/downTabBar/index/createList' })
             let roleTypes = this.user.map(r => {

@@ -1,6 +1,6 @@
 <template>
   <div class="imgs">
-    <div style="width: 40%;margin: 10px 10px 0" v-for="(item, index) in images" v-preview="item.url" :key="index">
+    <div style="width: 80%;margin: 10px 10px 0" v-for="(item, index) in images" v-preview="item.url" :key="index">
       <img :src="item.url" :key="index"
            style="width: 100%;"
            preview-title-enable="true"

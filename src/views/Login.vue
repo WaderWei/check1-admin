@@ -121,7 +121,14 @@ export default {
       if (!this.isUserIdError && !this.isPasswordError) {
         this.loading = true
         this.inactive = true
-        const result = await this.$http.get('user/login', { params: { userId: this.userId, password: this.password } })
+        const result = await this.$http.get('user/login', { params: { userId: this.userId, password: this.password } }).catch(msg => {
+          Dialog.alert({
+            title: ' ',
+            content: '服务正忙，请稍后重试！！！'
+          })
+          this.loading = false
+          this.inactive = false
+        })
         if (result.code === 1) {
           if (this.isActive) {
             const rememberUserInfo = { userId: this.userId, password: this.password }
@@ -150,7 +157,7 @@ export default {
             this.$router.replace({ path: 'downTabBar/index/receiveReportList' })
             return
           }
-          this.$router.replace({ path: 'downTabBar/home' })
+          this.$router.replace({ path: 'downTabBar/adminIndex/initSelection' })
         } else {
           Dialog.alert({
             title: ' ',
@@ -174,6 +181,10 @@ export default {
       this.isPasswordError = false
     }
     this.$refs.input9.focus()
+  },
+  created () {
+    // 删除admin页面的索引标示
+    sessionStorage.removeItem('adminPageIndex')
   }
 }
 

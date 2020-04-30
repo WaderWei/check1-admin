@@ -14,24 +14,36 @@
     >
       <div class="md-example-popup md-example-popup-left">
         <div v-if="userRole.indexOf(1) > -1">
-          <img src="../my-svg/createCheck.svg" class="imgSty"/>
+          <img :src="require('@/my-svg/createCheck.svg')" class="imgSty"/>
           <md-field-item solid title="创建的表" :class="selectItem === 0 ? 'selectItemSty' :''" arrow @click="createList('left')" />
         </div>
         <div v-if="userRole.indexOf(3) > -1">
-          <img src="../my-svg/exeCheck.svg" class="imgSty"/>
+          <img :src="require('@/my-svg/exeCheck.svg')" class="imgSty"/>
           <md-field-item solid title="要执行的表" :class="selectItem === 1 ? 'selectItemSty' :''" arrow @click="exeList('left')" />
         </div>
         <div v-if="userRole.indexOf(2) > -1">
-          <img src="../my-svg/waitCheck.svg" class="imgSty"/>
+          <img :src="require('@/my-svg/waitCheck.svg')" class="imgSty"/>
           <md-field-item solid title="待检查的表" :class="selectItem === 2 ? 'selectItemSty' :''" arrow @click="checkList('left')" />
         </div>
+        <div v-if="userRole.indexOf(5) || userRole.indexOf(6)> -1">
+          <img :src="require('@/my-svg/监督表格.svg')" class="imgSty"/>
+          <md-field-item solid title="监督的表" :class="selectItem === 5 ? 'selectItemSty' :''" arrow @click="jianCheckList('left')" />
+        </div>
         <div v-if="userRole.indexOf(2) > -1">
-          <img src="../my-svg/postReport.svg" class="imgSty"/>
+          <img :src="require('@/my-svg/postReport.svg')" class="imgSty"/>
           <md-field-item solid title="生成的报告" :class="selectItem === 3 ? 'selectItemSty' :''" arrow @click="postReport('left')" />
         </div>
         <div v-if="userRole.indexOf(4) > -1">
-          <img src="../my-svg/receiveReport.svg" class="imgSty"/>
+          <img :src="require('@/my-svg/receiveReport.svg')" class="imgSty"/>
           <md-field-item solid title="收到的报告" :class="selectItem === 4 ? 'selectItemSty' :''" arrow @click="receiveReport('left')" />
+        </div>
+        <div v-if="userRole.indexOf(3) > -1">
+          <img :src="require('@/my-svg/执行的报告.svg')" class="imgSty"/>
+          <md-field-item solid title="执行的报告" :class="selectItem === 7 ? 'selectItemSty' :''" arrow @click="exeReportList('left')" />
+        </div>
+        <div v-if="userRole.indexOf(5) > -1">
+          <img :src="require('@/my-svg/waitCheck.svg')" class="imgSty"/>
+          <md-field-item solid title="监督的报告" :class="selectItem === 6 ? 'selectItemSty' :''" arrow @click="jianCheckReport('left')" />
         </div>
       </div>
     </md-popup>
@@ -88,6 +100,18 @@ export default {
         this.selectItem = 4
         break
       }
+      case 'jianCheckList': {
+        this.selectItem = 5
+        break
+      }
+      case 'jianReport': {
+        this.selectItem = 6
+        break
+      }
+      case 'exeReportList': {
+        this.selectItem = 7
+        break
+      }
     }
   },
   watch: {
@@ -128,6 +152,21 @@ export default {
       this.$router.push('/downTabBar/index/receiveReportList')
       this.$set(this.isPopupShow, type, false)
       this.selectItem = 4
+    },
+    jianCheckList (type) {
+      this.$router.push('/downTabBar/index/jianCheckList')
+      this.$set(this.isPopupShow, type, false)
+      this.selectItem = 5
+    },
+    jianCheckReport (type) {
+      this.$router.push('/downTabBar/index/jianReport')
+      this.$set(this.isPopupShow, type, false)
+      this.selectItem = 6
+    },
+    exeReportList (type) {
+      this.$router.push('/downTabBar/index/exeReportList')
+      this.$set(this.isPopupShow, type, false)
+      this.selectItem = 7
     }
   }
 }

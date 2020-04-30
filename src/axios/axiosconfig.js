@@ -2,8 +2,9 @@ import axios from 'axios'
 import { Toast } from 'mand-mobile'
 
 // axios.defaults.baseURL = 'http://192.168.0.121:7777'
+// axios.defaults.baseURL = 'http://223.240.65.137:8073'
 axios.defaults.baseURL = 'http://223.240.65.137:7777'
-axios.defaults.timeout = 50000
+// axios.defaults.timeout = 50000
 /* axios.create({
   baseURL: 'http://192.168.0.121:8080', // api 的 base_url
   withCredentials: true, // 跨域请求时发送 cookies

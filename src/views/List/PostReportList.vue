@@ -45,7 +45,7 @@ const optionsAll = [
   { label: '查看', value: 0, tableState: ['未提交', '已提交', '作废'] },
   { label: '编辑', value: 1, tableState: ['未提交'] },
   { label: '提交', value: 2, tableState: ['未提交'] },
-  { label: '作废', value: 3, tableState: ['已提交'] },
+  // { label: '作废', value: 3, tableState: ['已提交'] }, 去掉此功能
   { label: '删除', value: 4, tableState: ['未提交'] }, // , '作废'
   { label: '发送', value: 5, tableState: ['已提交'] },
   { label: '据此重做', value: 6, tableState: ['已提交', '作废'] }
@@ -160,7 +160,8 @@ export default {
         case 2: {
           this.commonOperate('report/operateReport', 'put', {
             reportIds: this.selector,
-            status: 2
+            status: 2,
+            userId: getUser()[0].userId
           }, '提交')
           break
         }
@@ -259,6 +260,10 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    position: fixed;
+    right: 0;
+    top: 35px;
+    z-index: 100;
   }
   .c-item{
     text-align: left;

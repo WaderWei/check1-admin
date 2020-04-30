@@ -27,16 +27,22 @@
             <md-input-item title="检查表名称" align="right" :solid="false" :value="check.name" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <md-input-item title="适用部门" align="right" :value="check.deptName" disabled/>
-            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <!--<div style="height: 1px;background-color: #e0e0e0"></div>
             <md-input-item title="报告周期" align="right" :value="check.checkPeriod" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
-            <md-input-item title="短信提醒" align="right" v-model="msgTipStr" disabled/>
+            <md-input-item title="短信提醒" align="right" v-model="msgTipStr" disabled/>-->
+            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <md-input-item title="检查周期" align="right" :value="msgSelectPeriod== null?'':msgSelectPeriod" disabled/>
+            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <md-input-item title="生效日期" align="right" :value="check.takeEffectTime== null ? '' :check.takeEffectTime" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="检查人" :user-list="check.checkUserRoleList"></user-item>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="执行人" :user-list="check.exeUserRoleList"></user-item>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="接收人" :user-list="check.receiveUserRoleList"></user-item>
+            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <user-item title="监督人" :user-list="check.superVersionUserRoleList"></user-item>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="统计" :user-list="allTotal"></user-item>
             <div style="background-color: #f1f1f1;display: flex;padding: 12px">
@@ -68,8 +74,8 @@
                 />
                 <div style="height: 1px;background-color: #e0e0e0"></div>
                 <md-input-item title="奖罚单位" align="right" :value="n.unit === '1' ? '分': ( n.unit === '2' ? '元' : '其它')" disabled/>
-                <div style="height: 1px;background-color: #e0e0e0"></div>
-                <md-input-item title="证据必填" align="right" :value="n.isProof? '是':'否'" disabled/>
+                <!--<div style="height: 1px;background-color: #e0e0e0"></div>
+                <md-input-item title="证据必填" align="right" :value="n.isProof? '是':'否'" disabled/>-->
                 <div style="height: 1px;background-color: #e0e0e0"></div>
                 <div style="font-size: 18px;margin-top: 10px">检查图片</div>
                 <div class="cp-img-viewer">
@@ -77,7 +83,7 @@
                 </div>
                 <multi-file-uploader :is-uploader-show="false" style="margin-bottom: 10px"
                                      :is-delete-btn-show="false" :item-id="n.checkItemId"></multi-file-uploader>
-                <div style="height: 1px;background-color: #e0e0e0"></div>
+                <div style="height: 1px;background-color: #e0e0e0;margin-bottom: 15px"></div>
                 <div style="font-size: 0.32rem">检查证据</div>
                 <md-textarea-item ref="proofContent" title=""
                   autosize :rows="2" v-model="n.proofContent" placeholder="请输入" @blur="reviseBoard"/>
@@ -95,7 +101,7 @@
                 <div style="height: 1px;background-color: #e0e0e0"></div>
                 <md-input-item title="检查时间" align="right" :value="n.updateTime" disabled></md-input-item>
                 <div style="height: 1px;background-color: #e0e0e0"></div>
-                <md-button style="margin: 10px 0" @click="Checked(n)">检查完毕</md-button>
+                <md-button style="margin: 10px 0" :type="n.updateTime ? 'warning': 'default'" @click="Checked(n)">{{n.updateTime ? '已检查': '检查完毕'}}</md-button>
                 <div v-if="n.reportItemId !== null" class="c-uploader">
                   <div style="font-size: 16px;margin:20px 0 -10px 0">可以选择需要上传的附件</div>
                   <multi-file-uploader :is-uploader-show="n.reportItemId !== null" style="margin-bottom: 10px"
@@ -170,7 +176,8 @@ export default {
       check: {},
       count: '',
       allTotal: [],
-      msgTipStr: '不提醒'
+      msgTipStr: '不提醒',
+      msgSelectPeriod: ''
     }
   },
   created () {
@@ -197,7 +204,7 @@ export default {
       if (result.code === 1) {
         this.check = result.data
         this.reportName = this.check.reportName
-        if (this.check.msgTipWay != null) {
+        /* if (this.check.msgTipWay != null) {
           if (this.check.msgTipWay === '1') {
             this.msgTipStr = '每月最后一天'
           } else if (this.check.msgTipWay === '3') {
@@ -214,6 +221,19 @@ export default {
           }
         } else {
 
+        } */
+        if (this.check.periodWay != null) {
+          let msgArr = this.check.periodWay.split(',')
+          let dayNum = parseInt(msgArr[1])
+          if (msgArr[0] === '1') {
+            this.msgSelectPeriod = '每周第' + dayNum + '天'
+          } else if (msgArr[0] === '2') {
+            this.msgSelectPeriod = '每月第' + dayNum + '天'
+          } else if (msgArr[0] === '3') {
+            this.msgSelectPeriod = '每季第' + dayNum + '天'
+          } else {
+            this.msgSelectPeriod = '无'
+          }
         }
         this.$nextTick(() => {
           this.allTotal.push({ lastName: '总共' + this.check.examineCount + '项' })
@@ -247,6 +267,9 @@ export default {
           this.count = '合格数：' + this.check.qualifiedTotal + '；不合格数：' + (this.check.countReportItem - this.check.qualifiedTotal) + '；合格率：' +
             (this.check.qualifiedRate * 100).toFixed(2) + '%；最终金额：' + this.check.calamount + '元；最终分数：' + this.check.calScore + '分。'
           // this.getReportItmById(this.id, pageIndex, pageCount)
+          this.$nextTick(() => {
+            this.allTotal.push({ lastName: '总共' + this.check.countReportItem + '项' })
+          })
         }
       })
     },
@@ -323,35 +346,7 @@ export default {
       n.judgeBonus = '0.00'
     },
     Checked (item) {
-      if (item.isProof) {
-        if (!item.proofContent) {
-          Dialog.alert({
-            title: ' ',
-            content: '证据必填'
-          })
-          return
-        }
-      }
-      if (!this.reportName) {
-        Dialog.alert({
-          title: ' ',
-          content: '输入报表名称',
-          onConfirm: () => {
-            this.$refs.reportName.focus()
-            this.$refs.msv.scrollTo(0, 0, true)
-          }
-        })
-        return
-      }
-      if (this.reportName.length > 35) {
-        Dialog.alert({
-          title: ' ',
-          content: '报表名称不能超过35个字符',
-          onConfirm: () => {
-            this.$refs.reportName.focus()
-            this.$refs.msv.scrollTo(0, 0, true)
-          }
-        })
+      if (!this.valid(item)) {
         return
       }
       // 生成检查的时间
@@ -374,10 +369,10 @@ export default {
       }
       let newObject = {}
       newObject.checkItemId = item.checkItemId
-      newObject.examineImageVoList = item.proofImgs.reader0
-      newObject.proofContent = item.proofContent
-      newObject.thisResult = item.thisResult
-      newObject.judgeBonus = item.judgeBonus
+      newObject.examineImageVoList = item.proofImgs.reader0 // 2
+      newObject.proofContent = item.proofContent // 1
+      newObject.thisResult = item.thisResult // 3
+      newObject.judgeBonus = item.judgeBonus // 4
       newObject.updateTime = item.updateTime
       newObject.id = item.reportItemId
       reportItems.push(newObject)
@@ -475,6 +470,60 @@ export default {
           }
         })
       }
+    },
+    valid (item) {
+      /* if (item.isProof) {
+        if (!item.proofContent) {
+          Dialog.alert({
+            title: ' ',
+            content: '证据必填'
+          })
+          return
+        }
+      } */
+      if (!this.reportName) {
+        Dialog.alert({
+          title: ' ',
+          content: '输入报表名称',
+          onConfirm: () => {
+            this.$refs.reportName.focus()
+            this.$refs.msv.scrollTo(0, 0, true)
+          }
+        })
+        return
+      }
+      if (this.reportName.length > 35) {
+        Dialog.alert({
+          title: ' ',
+          content: '报表名称不能超过35个字符',
+          onConfirm: () => {
+            this.$refs.reportName.focus()
+            this.$refs.msv.scrollTo(0, 0, true)
+          }
+        })
+      }
+      if (!item.proofContent) {
+        Dialog.alert({
+          title: ' ',
+          content: '请填写证据内容'
+        })
+        return false
+      }
+      if (!item.proofImgs || !item.proofImgs.reader0 || item.proofImgs.reader0.length < 1) {
+        Dialog.alert({
+          title: ' ',
+          content: '请上传证据图片'
+        })
+        return false
+      }
+      if (!item.judgeBonus) {
+        Dialog.alert({
+          title: ' ',
+          content: '请填写扣除金额'
+        })
+        return false
+      }
+      return true
     }
   }
 }

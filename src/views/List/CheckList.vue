@@ -1,5 +1,9 @@
 <template>
   <div class="create-contain">
+    <div style="display: -webkit-flex;display: flex;flex-direction: row;justify-content: flex-end;align-items: center;font-size: 0.28rem">
+      <img :src="require('@/my-svg/组织架构.svg')" style="color: red;height: 20px"/>
+      <md-button type="link" style="margin: 10px 10px 10px 0;color: red" @click="toTree()">按组织结构查看</md-button>
+    </div>
     <div class="c-list" v-if="checkList.length > 0">
       <md-scroll-view
         :auto-reflow="true"
@@ -33,7 +37,7 @@
 </template>
 
 <script>
-import { Icon, Field, ActionSheet, ScrollView, RadioList, ResultPage, Dialog } from 'mand-mobile'
+import { Icon, Field, ActionSheet, ScrollView, RadioList, ResultPage, Dialog, Button } from 'mand-mobile'
 import { getUser } from '../../utils'
 export default {
   name: 'CheckList',
@@ -44,7 +48,8 @@ export default {
     [RadioList.name]: RadioList,
     [ResultPage.name]: ResultPage,
     [Dialog.name]: Dialog,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Button.name]: Button
   },
   data () {
     return {
@@ -66,19 +71,38 @@ export default {
     }
   },
   created () {
-    this.getList()
+    let clickType = this.$route.query.type
+    let url
+    let data
+    if (clickType === 1) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByDepId'
+      data = {
+        dpeId: clickDate
+      }
+    } else if (clickType === 2) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByUserId'
+      data = {
+        userId: clickDate
+      }
+    } else {
+      url = 'check/findCheckList'
+      data = {
+        userId: getUser()[0].userId,
+        roleType: 2
+      }
+    }
+    this.getList(url, data)
   },
   mounted () {
   },
   computed: {
   },
   methods: {
-    getList () {
+    getList (url, data) {
       // todo 这里还要给roleType
-      this.$http.get('check/findCheckList', { params: {
-        userId: getUser()[0].userId,
-        roleType: 2
-      } })
+      this.$http.get(url, { params: data })
         .then(res => {
           if (res.code === 1) {
             this.checkList = res.data
@@ -105,6 +129,9 @@ export default {
           break
         }
       }
+    },
+    toTree () {
+      this.$router.push({ name: 'organizationView', query: { listName: 'checkList' } })
     }
   }
 }

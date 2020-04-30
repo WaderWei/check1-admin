@@ -43,7 +43,7 @@
 
 <script>
 import { Icon, ImageReader, Tag, Toast } from 'mand-mobile'
-import imageProcessor from 'mand-mobile/components/image-reader/image-processor'
+// import imageProcessor from 'mand-mobile/components/image-reader/image-processor'
 export default {
   name: 'ImgReader',
   components: {
@@ -64,14 +64,15 @@ export default {
       Toast.hide()
       setTimeout(() => {
         const demoImageList = this.images[name] || []
-        imageProcessor({
+        demoImageList.push({ name: file.name, size: file.size, url: dataUrl })
+        /* imageProcessor({
           dataUrl,
           width: 460,
           height: 460,
-          quality: 0.6
+          quality: 1
         }).then(({ dataUrl }) => {
           dataUrl && demoImageList.push({ name: file.name, size: file.size, url: dataUrl })
-        })
+        }) */
         this.$set(this.images, name, demoImageList)
       }, 100)
     },

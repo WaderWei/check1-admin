@@ -24,10 +24,14 @@
             <md-input-item title="检查表名称" :solid="false" align="right" :value="check.name" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <md-input-item title="适用部门" align="right" :value="check.deptName" disabled/>
-            <div style="height: 1px;background-color: #e0e0e0"></div>
+           <!-- <div style="height: 1px;background-color: #e0e0e0"></div>
             <md-input-item title="报告周期" align="right" :value="check.checkPeriod" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
-            <md-input-item title="短信提醒" align="right" :value="msgTipStr" disabled/>
+            <md-input-item title="短信提醒" align="right" :value="msgTipStr" disabled/>-->
+            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <md-input-item title="检查周期" align="right" :value="msgSelectPeriod== null ? '':msgSelectPeriod" disabled/>
+            <div style="height: 1px;background-color: #e0e0e0"></div>
+            <md-input-item title="生效日期" align="right" :value="check.takeEffectTime == null ? '':check.takeEffectTime" disabled/>
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="检查人" :user-list="check.checkUserRoleList"></user-item>
             <div style="height: 1px;background-color: #e0e0e0"></div>
@@ -35,18 +39,20 @@
             <div style="height: 1px;background-color: #e0e0e0"></div>
             <user-item title="接收人" :user-list="check.receiveUserRoleList"></user-item>
             <div style="height: 1px;background-color: #e0e0e0"></div>
+            <user-item title="监督人" :user-list="check.superVersionUserRoleList"></user-item>
+            <div style="height: 1px;background-color: #e0e0e0"></div>
             <!--this.count = '合格数：' + this.check.qualifiedTotal + '；不合格数：' + (this.check.countReportItem - this.check.qualifiedTotal) + '；合格率：' +
             (this.check.qualifiedRate * 100).toFixed(2) + '%；最终金额：' + this.check.calamount + '元；最终分数：' + this.check.calScore + '分。'-->
-            <div v-if="check.status !==1 ">
+            <div>
               <div style="height: 1px;background-color: #e0e0e0"></div>
               <user-item title="统计" :user-list="allTotal"></user-item>
-              <div style="background-color: #f1f1f1;display: flex;padding: 12px">
+              <div style="background-color: #f1f1f1;display: flex;padding: 12px" v-if="check.status !==1 ">
                 <span style="font-size: 16px">合格数：</span><span style="font-size: 16px">{{this.check.qualifiedTotal}}</span>
               </div>
-              <div style="background-color: #dddddd;display: flex;padding: 12px">
+              <div style="background-color: #dddddd;display: flex;padding: 12px" v-if="check.status !==1 ">
                 <span style="font-size: 16px">不合格数：</span><span style="font-size: 16px">{{this.check.countReportItem - this.check.qualifiedTotal}}</span>
               </div>
-              <div style="background-color: #f1f1f1;display: flex;padding: 12px">
+              <div style="background-color: #f1f1f1;display: flex;padding: 12px" v-if="check.status !==1 ">
                 <span style="font-size: 16px">合格率：</span><span style="font-size: 16px">{{(this.check.qualifiedRate * 100).toFixed(2)}}%</span>
               </div>
               <div style="background-color: #dddddd;display: flex;padding: 12px">
@@ -80,8 +86,8 @@
                 />
                 <div style="height: 1px;background-color: #e0e0e0"></div>
                 <md-input-item title="奖罚单位" align="right" :value="n.unit === '1' ? '分': ( n.unit === '2' ? '元' : '其它')" disabled />
-                <div style="height: 1px;background-color: #e0e0e0"></div>
-                <md-input-item title="证据必填" align="right" :value="n.isProof? '是':'否'" disabled />
+                <!--<div style="height: 1px;background-color: #e0e0e0"></div>
+                <md-input-item title="证据必填" align="right" :value="n.isProof? '是':'否'" disabled />-->
                 <div style="font-size: 18px;margin-top: 10px">检查图片</div>
                 <div class="cp-img-viewer">
                   <img-viewer :images="n.examineImageVos"></img-viewer>
@@ -170,7 +176,8 @@ export default {
       bothItems: [],
       count: '',
       allTotal: [],
-      msgTipStr: '不提醒'
+      msgTipStr: '不提醒',
+      msgSelectPeriod: ''
     }
   },
   created () {
@@ -195,7 +202,7 @@ export default {
         this.$nextTick(() => {
           this.allTotal.push({ lastName: '总共' + this.check.checkItemCount + '项' })
         })
-        if (this.check.msgTipWay != null) {
+        /* if (this.check.msgTipWay != null) {
           if (!this.check.msgTipWay) {
             if (this.check.msgTipWay === '1') {
               this.msgTipStr = '每月最后一天'
@@ -212,6 +219,19 @@ export default {
               }
             }
           } else {
+          }
+        } */
+        if (this.check.periodWay != null) {
+          let msgArr = this.check.periodWay.split(',')
+          let dayNum = parseInt(msgArr[1])
+          if (msgArr[0] === '1') {
+            this.msgSelectPeriod = '每周第' + dayNum + '天'
+          } else if (msgArr[0] === '2') {
+            this.msgSelectPeriod = '每月第' + dayNum + '天'
+          } else if (msgArr[0] === '3') {
+            this.msgSelectPeriod = '每季第' + dayNum + '天'
+          } else {
+            this.msgSelectPeriod = '无'
           }
         }
       } else {

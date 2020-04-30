@@ -1,15 +1,20 @@
 <template>
   <div class="create-contain">
-    <div class="c-list" v-if="exeList.length > 0">
+    <div style="display: -webkit-flex;display: flex;flex-direction: row;justify-content: flex-end;align-items: center;font-size: 0.28rem">
+      <img :src="require('@/my-svg/组织架构.svg')" style="color: red;height: 20px"/>
+      <md-button type="link" style="margin: 10px 10px 10px 0px;color: red" @click="toTree()">按组织结构查看</md-button>
+    </div>
+    <div class="c-list" v-if="list.length > 0">
       <md-scroll-view
         :auto-reflow="true"
         :scrolling-x="false"
       >
         <md-field title="执行的检查表">
-          <md-radio-list
+          <!--<md-radio-list
             :options="exeList"
-            @change="$_showActionSheet"
-          />
+            @change="$_showActionSheet1"
+          />-->
+          <read-list :list="list" @openSheet="open"></read-list>
         </md-field>
         <md-field style="margin-top: 50px;visibility: hidden" title="Adjustment Style">
         </md-field>
@@ -33,7 +38,8 @@
 </template>
 
 <script>
-import { Icon, Field, ActionSheet, ScrollView, RadioList, ResultPage, Dialog } from 'mand-mobile'
+import { Icon, Field, ActionSheet, ScrollView, RadioList, ResultPage, Dialog, Button } from 'mand-mobile'
+import ReadList from '../../components/ReadList'
 import { getUser } from '../../utils'
 export default {
   name: 'ExeList',
@@ -44,48 +50,79 @@ export default {
     [RadioList.name]: RadioList,
     [ResultPage.name]: ResultPage,
     [Dialog.name]: Dialog,
-    [Icon.name]: Icon
+    [Icon.name]: Icon,
+    [Button.name]: Button,
+    ReadList
   },
   data () {
     return {
-      exeList: [],
       opeTitle: '请选择操作',
       selectId: -1,
       isShoeSheet: false,
       defaultIndex: 0,
       options: [{
         label: '查看',
-        value: 0 }]
+        value: 0 }],
+      list: []
     }
   },
   created () {
   },
   mounted () {
-    this.getList()
+    let clickType = this.$route.query.type
+    let url
+    let data
+    if (clickType === 1) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByDepId'
+      data = {
+        dpeId: clickDate
+      }
+    } else if (clickType === 2) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByUserId'
+      data = {
+        userId: clickDate
+      }
+    } else {
+      url = 'check/findCheckList'
+      data = {
+        userId: getUser()[0].userId,
+        roleType: 3
+      }
+    }
+    this.getList(url, data)
   },
   computed: {
   },
   methods: {
-    getList () {
+    getList (url, data) {
       // todo 这里还要给roleType
-      this.$http.get('check/findCheckList', { params: {
-        userId: getUser()[0].userId,
-        roleType: 3
-      } })
+      this.$http.get(url, { params: data })
         .then(res => {
           if (res.code === 1) {
-            this.exeList = res.data
+            this.list = res.data
           } else {
-            this.exeList = []
+            this.list = []
           }
         })
     },
-    $_showActionSheet (option, index) {
+    open (val) {
+      this.selectId = val.value
+      this.$_showActionSheet()
+    },
+    $_showActionSheet () {
+      this.isShoeSheet = true
+    },
+    $_showActionSheet1 (option, val) {
       this.selectId = option.value
       this.isShoeSheet = true
     },
     $_selected (item) {
-      this.$router.push({ name: 'lookOver', query: { id: this.selectId } })
+      this.$router.push({ name: 'readLookOver', query: { id: this.selectId, pageFlag: 3 } })
+    },
+    toTree () {
+      this.$router.push({ name: 'organizationView', query: { listName: 'exeList' } })
     }
   }
 }

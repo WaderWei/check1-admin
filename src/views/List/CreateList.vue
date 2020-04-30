@@ -4,6 +4,10 @@
         <md-button type="link" icon="right" style="padding: 15px;color: red" @click="addCheck">新增</md-button>
         <md-button type="link" icon="edit"  style="padding: 15px;color: red" @click="operate">操作</md-button>
       </div>
+      <div style="display: -webkit-flex;display: flex;flex-direction: row;justify-content: flex-end;align-items: center;font-size: 0.28rem">
+        <img :src="require('@/my-svg/组织架构.svg')" style="color: red;height: 20px"/>
+        <md-button type="link" style="margin: 10px 10px 10px 0;color: red" @click="toTree()">按组织结构查看</md-button>
+      </div>
       <div class="c-list" v-if="createList.length > 0">
         <md-scroll-view
           :auto-reflow="true"
@@ -46,12 +50,14 @@ const checkName = 'checkName'
 const selectDept = 'selectDept'
 const reportPeriod = 'reportPeriod'
 const msgTipKey = 'msgTipKey'
+const selectDate = 'selectDate'
+const checkPeriodNew = 'checkPeriodNew'
 // 1.未提交(编辑不新增) 2.已提交(编辑新增) 3.作废
 const optionsAll = [
   { label: '查看', value: 0, tableState: ['未提交', '已提交', '作废'] },
   { label: '编辑', value: 1, tableState: ['未提交'] },
   { label: '提交', value: 2, tableState: ['未提交'] },
-  { label: '作废', value: 3, tableState: ['已提交'] },
+  // 不要了 { label: '作废', value: 3, tableState: ['已提交'] },
   { label: '删除', value: 4, tableState: ['未提交'] }, // , '作废'
   { label: '据此重做', value: 5, tableState: ['已提交'] }
 ]
@@ -86,11 +92,36 @@ export default {
     sessionStorage.removeItem(selectUser + 2)
     sessionStorage.removeItem(selectUser + 3)
     sessionStorage.removeItem(selectUser + 4)
+    sessionStorage.removeItem(selectUser + 5)
+    sessionStorage.removeItem(selectDate)
     sessionStorage.removeItem('sCheckId')
     sessionStorage.removeItem(msgTipKey)
+    sessionStorage.removeItem(checkPeriodNew)
   },
   mounted () {
-    this.getList()
+    let clickType = this.$route.query.type
+    let url
+    let data
+    if (clickType === 1) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByDepId'
+      data = {
+        dpeId: clickDate
+      }
+    } else if (clickType === 2) {
+      let clickDate = this.$route.query.val
+      url = 'tree/queryCheckByUserId'
+      data = {
+        userId: clickDate
+      }
+    } else {
+      url = 'check/findCheckList'
+      data = {
+        userId: getUser()[0].userId,
+        roleType: 1
+      }
+    }
+    this.getList(url, data)
   },
   computed: {
     spliceTitle: function () {
@@ -102,12 +133,9 @@ export default {
     }
   },
   methods: {
-    getList () {
+    getList (url, data) {
       // todo 这里还要给roleType
-      this.$http.get('check/findCheckList', { params: {
-        userId: getUser()[0].userId,
-        roleType: 1
-      } })
+      this.$http.get(url, { params: data })
         .then(res => {
           if (res.code === 1) {
             this.createList = res.data
@@ -219,7 +247,10 @@ export default {
                 title: ' ',
                 content: '据此重做成功',
                 onConfirm: () => {
-                  this.getList()
+                  this.getList('check/findCheckList', {
+                    userId: getUser()[0].userId,
+                    roleType: 1
+                  })
                   this.selector = []
                 }
               })
@@ -248,7 +279,10 @@ export default {
               title: ' ',
               content: tip + '成功',
               onConfirm: () => {
-                this.getList()
+                this.getList('check/findCheckList', {
+                  userId: getUser()[0].userId,
+                  roleType: 1
+                })
                 this.selector = []
               }
             })
@@ -259,6 +293,9 @@ export default {
             })
           }
         })
+    },
+    toTree () {
+      this.$router.push({ name: 'organizationView', query: { listName: 'createList' } })
     }
   }
 }

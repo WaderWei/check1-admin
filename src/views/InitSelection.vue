@@ -25,7 +25,7 @@
           :options="creator"
         />
       </md-field>
-        <md-field style="height: 50px;visibility: hidden" title="Adjustment Style">
+        <md-field style="height: 100px;visibility: hidden" title="Adjustment Style">
         </md-field>
     </md-scroll-view>
     </div>
@@ -66,7 +66,9 @@ export default {
   },
   methods: {
     findUsers () {
-      this.$http.get('user/findCreator')
+      this.$http.get('user/findCreator', {
+        params: { roleType: 2 }
+      })
         .then(res => {
           if (res.code === 1) {
             this.creator = res.data
@@ -102,7 +104,8 @@ export default {
           this.$http.delete('user/deleteCreator',
             {
               params: {
-                userIds: this.selector
+                userIds: this.selector,
+                roleType: 1
               },
               paramsSerializer: params => {
                 return qs.stringify(params, { indices: false })
@@ -141,7 +144,7 @@ export default {
     height 100%
   }
   .s-list{
-    height 80%
+    height 1200px
     background #FFF
     text-align left
   }

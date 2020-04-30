@@ -112,13 +112,13 @@
               placeholder="请输入此检查项奖罚标准"
               @blur="checkWayBlur"
             ></md-input-item>
-          <div style="height: 1px;background-color: #e0e0e0"></div>
+          <!--<div style="height: 1px;background-color: #e0e0e0"></div>
           <div class="c-proof">
             <span>证据是否必填</span>
             <md-switch class="c-switch"
               v-model="isProof"
             ></md-switch>
-          </div>
+          </div>-->
           <div style="height: 1px;background-color: #e0e0e0"></div>
           <div class="c-file">
             <span>附件是否上传</span>
@@ -157,7 +157,7 @@
 import { InputItem, Field, Icon, Toast, ScrollView, Button, FieldItem, TextareaItem, ImageReader, Tag, Switch, Radio, Dialog } from 'mand-mobile'
 import BackBar from '../../components/BackBar'
 import MultiFileUploader from '../../components/MultiFileUploader'
-import imageProcessor from 'mand-mobile/components/image-reader/image-processor'
+// import imageProcessor from 'mand-mobile/components/image-reader/image-processor'
 import { KeyboardJackUp, getUser } from '../../utils'
 export default {
   name: 'CreateCheckItem',
@@ -184,7 +184,7 @@ export default {
       type: 1,
       checkContent: '',
       checkWay: '',
-      isProof: false,
+      isProof: true,
       isFile: false,
       bonus: 0,
       bonusUnit: '1',
@@ -234,11 +234,7 @@ export default {
   },
   methods: {
     saveCheckItem () {
-      if (!this.checkContent) {
-        Dialog.alert({
-          title: ' ',
-          content: '请填写检查内容'
-        })
+      if (!this.valid()) {
         return
       }
       this.$http.post('checkItem/addCheckItem', {
@@ -262,7 +258,7 @@ export default {
                 if (this.checkItemId === -1) {
                   this.checkContent = ''
                   this.checkWay = ''
-                  this.isProof = false
+                  // this.isProof = false
                   this.bonus = 0
                   this.bonusUnit = '1'
                   this.checkItemId = -1
@@ -290,7 +286,7 @@ export default {
           this.bonus = checkItem.bonus
           this.inputType = checkItem.unit === '3' ? '' : 'money'
           this.bonusUnit = checkItem.unit
-          this.isProof = checkItem.proof
+          // this.isProof = checkItem.proof
         } else {
           Dialog.failed({
             title: ' ',
@@ -317,14 +313,15 @@ export default {
         if (demoImageList.length > 9) {
           return
         }
-        imageProcessor({
+        demoImageList.push({ name: file.name, size: file.size, baseStr: dataUrl })
+        /* imageProcessor({
           dataUrl,
           width: 460,
           height: 460,
           quality: 0.6
         }).then(({ dataUrl }) => {
-          dataUrl && demoImageList.push({ name: file.name, size: file.size, baseStr: dataUrl })
-        })
+          dataUrl &&
+        }) */
         this.$set(this.imageList, name, demoImageList)
       }, 100)
     },
@@ -359,7 +356,7 @@ export default {
         that.title = '创建检查项'
         that.checkContent = ''
         that.checkWay = ''
-        that.isProof = false
+        // that.isProof = false
         that.bonus = 0
         that.bonusUnit = '1'
         // 区别
@@ -377,7 +374,7 @@ export default {
         that.title = '插入检查项检查项'
         that.checkContent = ''
         that.checkWay = ''
-        that.isProof = false
+        // that.isProof = false
         that.bonus = 0
         that.bonusUnit = '1'
         // 区别
@@ -431,6 +428,30 @@ export default {
             // Toast.failed('失败:' + res.ms)
           }
         })
+    },
+    valid () {
+      if (!this.checkContent) {
+        Dialog.alert({
+          title: ' ',
+          content: '请填写检查内容'
+        })
+        return false
+      }
+      if (!this.imageList || !this.imageList.reader0 || this.imageList.reader0.length < 1) {
+        Dialog.alert({
+          title: ' ',
+          content: '请上传要检查的图片'
+        })
+        return false
+      }
+      if (!this.checkWay) {
+        Dialog.alert({
+          title: ' ',
+          content: '请填写检查办法'
+        })
+        return false
+      }
+      return true
     }
   }
 }

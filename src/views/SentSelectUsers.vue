@@ -87,7 +87,7 @@ export default {
     addUser () {
       if (this.selector && this.selector.length > 0) {
         let qs = this.$qs
-        this.$http('report/freedomSend', {
+        let data = {
           method: 'post',
           params: {
             reportIds: this.ids,
@@ -95,28 +95,34 @@ export default {
           },
           paramsSerializer: params => {
             return qs.stringify(params, { indices: false })
-          } }).then(res => {
-          if (res.code === 1) {
-            Dialog.succeed({
-              title: ' ',
-              content: '发送成功',
-              confirmText: '确定'
-            })
-            this.selector = []
-            this.findUser = []
-            this.keyValue = ''
-          } else {
-            Dialog.failed({
-              title: ' ',
-              content: '失败信息：' + res.msg,
-              confirmText: '确定'
-            })
-          }
+          } }
+        let url = 'report/freedomSend'
+        let tipContent = '发送成功'
+        this.$http(url, data).then(res => {
+          this.comm(res, tipContent)
         })
       } else {
         Dialog.alert({
           title: ' ',
           content: '请选中要添加的员工',
+          confirmText: '确定'
+        })
+      }
+    },
+    comm (res, tip) {
+      if (res.code === 1) {
+        Dialog.succeed({
+          title: ' ',
+          content: tip,
+          confirmText: '确定'
+        })
+        this.selector = []
+        this.findUser = []
+        this.keyValue = ''
+      } else {
+        Dialog.failed({
+          title: ' ',
+          content: '失败信息：' + res.msg,
           confirmText: '确定'
         })
       }

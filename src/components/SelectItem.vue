@@ -3,10 +3,10 @@
     <md-field-item class="i-f-i" align="right" solid  :title="title" arrow content="  请选择" @click="selectUser">
     </md-field-item>
     <div class="user-con">
-      <div class="user-title" v-if="selectUsers.length > 0">已选检查人</div>
+      <div class="user-title" v-if="selectUsers.length > 0">已选-{{title}}</div>
       <div class = 'user-item'>
         <div class="i-item" v-for="user in selectUsers" :key="user.value">
-          <span class="i-name">{{user.label}}</span><span class="i-cha" @click="removeUser(user.value)">×</span>
+          <span class="i-name">{{user.label}}</span><span class="i-cha" v-if="user.label !== '全体'" @click="removeUser(user.value)">×</span>
         </div>
       </div>
     </div>
@@ -21,7 +21,8 @@ export default {
   props: {
     title: String,
     selectType: Number,
-    selectUserArr: Array
+    selectUserArr: Array,
+    selectRoleType: Number
   },
   components: {
     [FieldItem.name]: FieldItem,
@@ -41,12 +42,21 @@ export default {
   },
   methods: {
     selectUser () {
-      this.$router.push({ name: 'selectUsers', query: { type: this.selectType } })
+      this.$router.push({ name: 'selectUsers', query: { type: this.selectType, roleType: this.selectRoleType } })
     },
     removeUser (value) {
       let newArr = this.selectUsers.filter(s => s.value !== value)
       this.selectUsers = newArr
       sessionStorage.setItem(selectUser + this.selectType, JSON.stringify(newArr))
+      if (parseInt(this.selectType) === 10) {
+        this.$store.commit('setSelectUserArr', newArr)
+      }
+      if (parseInt(this.selectType) === 11) {
+        this.$store.commit('setSelectUserArrCheck', newArr)
+      }
+      if (parseInt(this.selectType) === 12) {
+        this.$store.commit('setSelectUserArrReport', newArr)
+      }
     }
   }
 }
@@ -92,5 +102,7 @@ export default {
   .i-cha:hover{
     background-color: #5063e6;
     color: white;
+  }
+  .i-f-i{
   }
 </style>

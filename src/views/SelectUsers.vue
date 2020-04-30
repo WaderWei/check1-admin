@@ -51,7 +51,7 @@
 <script>
 import BackBar from '../components/BackBar'
 import { InputItem, Icon, ScrollView, CheckList, Field, ResultPage, Button, Dialog, DropMenu, Agree } from 'mand-mobile'
-import { findObjArrWithIdArr } from '../utils'
+import { findObjArrWithIdArr, getUser } from '../utils'
 const selectUser = 'selectUser'
 export default {
   name: 'SelectUsers',
@@ -73,6 +73,7 @@ export default {
       title: '选人',
       keyValue: '',
       routeType: '',
+      roleType: 0,
       selector: [],
       findUser: [],
       loading: false,
@@ -89,6 +90,7 @@ export default {
   },
   created () {
     this.routeType = this.$route.query.type
+    this.roleType = this.$route.query.roleType
   },
   methods: {
     async usersSearch () {
@@ -121,68 +123,17 @@ export default {
         this.inactive = true
         // admin
         if (this.routeType === '1') {
-          let userRoles = []
-          for (let i = 0; i < this.selector.length; i++) {
-            userRoles.push({ userId: this.selector[i], roleType: 1 })
-          }
-          this.$http.post('user/addUserRole', {
-            parameter: userRoles
-          }).then(res => {
-            if (res.code === 1) {
-              Dialog.alert({
-                title: ' ',
-                content: '制定人添加成功',
-                confirmText: '确定'
-              })
-              this.selector = []
-              this.findUser = []
-              this.keyValue = ''
-            } else {
-              Dialog.failed({
-                title: ' ',
-                content: '失败信息' + res.msg,
-                confirmText: '确定'
-              })
-            }
-            this.loading = false
-            this.inactive = false
-          })
+          this.commonAdd('user/addUserRole', 1, '制定人添加成功')
+        } else if (this.routeType === '2') {
+          this.commonAdd('user/addUserRole', 6, '超级监督人添加成功')
+        } else if (parseInt(this.routeType) === 10) {
+          this.judgeUser(2)
+        } else if (parseInt(this.routeType) === 11) {
+          this.judgeUser(this.roleType)
+        } else if (parseInt(this.routeType) === 12) {
+          this.judgeUser(this.roleType)
         } else {
-          let storageUserArr = []
-          let selectUserArr = findObjArrWithIdArr(this.findUser, this.selector)
-          if (this.selector[0] === 0) {
-            storageUserArr = selectUserArr
-          } else {
-            let storageUserStr = sessionStorage.getItem(selectUser + this.routeType)
-            if (storageUserStr) {
-              storageUserArr = JSON.parse(storageUserStr)
-              for (let i = 0; i < selectUserArr.length; i++) {
-                // 如果存储中的数组中不存在，则加入到存储中的数组中
-                if (!(storageUserArr.find(s => s.value === selectUserArr[i].value))) {
-                  storageUserArr.push(selectUserArr[i])
-                }
-              }
-              for (let i = 0; i < storageUserArr.length; i++) {
-                if (storageUserArr[i].value === 0) {
-                  storageUserArr.splice(i, 1)
-                  break
-                }
-              }
-            } else {
-              storageUserArr = selectUserArr
-            }
-          }
-          sessionStorage.setItem(selectUser + this.routeType, JSON.stringify(storageUserArr))
-          Dialog.alert({
-            title: ' ',
-            content: '选择成功，返回查看',
-            confirmText: '确定'
-          })
-          this.loading = false
-          this.inactive = false
-          this.selector = []
-          this.findUser = []
-          this.keyValue = ''
+          this.addStore()
         }
       } else {
         Dialog.alert({
@@ -191,6 +142,102 @@ export default {
           confirmText: '确定'
         })
       }
+    },
+    commonAdd (url, type, tip) {
+      let userRoles = []
+      for (let i = 0; i < this.selector.length; i++) {
+        userRoles.push({ userId: this.selector[i], roleType: type })
+      }
+      this.$http.post(url, {
+        parameter: userRoles
+      }).then(res => {
+        if (res.code === 1) {
+          Dialog.alert({
+            title: ' ',
+            content: tip,
+            confirmText: '确定'
+          })
+          this.selector = []
+          this.findUser = []
+          this.keyValue = ''
+        } else {
+          Dialog.failed({
+            title: ' ',
+            content: '失败信息' + res.msg,
+            confirmText: '确定'
+          })
+        }
+        this.loading = false
+        this.inactive = false
+      })
+    },
+    judgeUser (val) {
+      let qs = this.$qs
+      this.$http.get('statement/isUserCheckUser', {
+        params: {
+          userId: getUser()[0].userId,
+          checkUserIds: this.selector,
+          roleType: val
+        },
+        paramsSerializer: params => {
+          return qs.stringify(params, { indices: false })
+        }
+      }).then(res => {
+        if (res.code === 1) {
+          this.keyValue = ''
+          this.addStore()
+        } else if (res.code === 0) {
+          Dialog.alert({
+            title: ' ',
+            content: '选择的人不在此范围内',
+            confirmText: '确定' })
+        } else {
+          Dialog.failed({
+            title: ' ',
+            content: '失败信息' + res.msg,
+            confirmText: '确定'
+          })
+        }
+        this.loading = false
+        this.inactive = false
+      })
+    },
+    addStore () {
+      let storageUserArr = []
+      let selectUserArr = findObjArrWithIdArr(this.findUser, this.selector)
+      if (this.selector[0] === 0) {
+        storageUserArr = selectUserArr
+      } else {
+        let storageUserStr = sessionStorage.getItem(selectUser + this.routeType)
+        if (storageUserStr) {
+          storageUserArr = JSON.parse(storageUserStr)
+          for (let i = 0; i < selectUserArr.length; i++) {
+            // 如果存储中的数组中不存在，则加入到存储中的数组中
+            if (!(storageUserArr.find(s => s.value === selectUserArr[i].value))) {
+              storageUserArr.push(selectUserArr[i])
+            }
+          }
+          for (let i = 0; i < storageUserArr.length; i++) {
+            if (storageUserArr[i].value === 0) {
+              storageUserArr.splice(i, 1)
+              break
+            }
+          }
+        } else {
+          storageUserArr = selectUserArr
+        }
+      }
+      sessionStorage.setItem(selectUser + this.routeType, JSON.stringify(storageUserArr))
+      Dialog.alert({
+        title: ' ',
+        content: '选择成功，返回查看',
+        confirmText: '确定'
+      })
+      this.loading = false
+      this.inactive = false
+      this.selector = []
+      this.findUser = []
+      this.keyValue = ''
     }
   }
 }
